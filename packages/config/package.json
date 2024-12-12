@@ -1,9 +1,13 @@
 {
   "name": "@genstack.js/config",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "type": "module",
+  "description": "Internal configurations used by the Genstack toolkit",
   "config": {
     "apiVersion": "v1"
+  },
+  "repository": {
+    "url": "https://github.com/genstack-gg/genstack"
   },
   "files": ["dist"],
   "exports": {
@@ -18,14 +22,15 @@
     "build:types": "tsc",
     "build": "pnpm run gen && pnpm run build:types",
     "publish:npm": "npm publish --access public",
+    "pkglint": "bun run ../builder/src/pkglint.mts",
     "gen": "pkl eval -f json ./src/master.pkl | bun run --bun ./scripts/constants.mts && bun run --bun ./scripts/build.mts",
-    "check": "pnpm build && pnpm biome check && tsc --noEmit && pnpx publint"
+    "check": "pnpm build && pnpm biome check && tsc --noEmit && pnpx publint && pnpm run pkglint"
   },
   "peerDependencies": {
     "@bufbuild/protobuf": "2.2.2"
   },
   "devDependencies": {
-    "@genstack.js/builder": "workspace:*",
+    "@genstack.js/builder": "latest",
     "esbuild": "0.24.0"
   }
 }

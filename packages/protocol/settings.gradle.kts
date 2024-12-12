@@ -23,6 +23,6 @@ gradleEnterprise {
     }
 }
 
-rootProject.name = "protocol"
+rootProject.name = "genstack-protocol"
 
 includeBuild("../config")

@@ -1,4 +1,6 @@
 [libraries]
-genstack-config = { module = "dev.newco:config" }
-genstack-protocol = { module = "dev.newco:protocol" }
-genstack-sdk = { module = "dev.newco:sdk" }
+commons = { module = "dev.newco:genstack-commons" }
+engine = { module = "dev.newco:genstack-engine" }
+config = { module = "dev.newco:genstack-config" }
+protocol = { module = "dev.newco:genstack-protocol" }
+sdk = { module = "dev.newco:genstack-sdk" }

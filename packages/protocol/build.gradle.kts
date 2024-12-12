@@ -83,7 +83,7 @@ kotlin {
       }
 
       dependencies {
-        api(genstackMaven("config"))
+        api(genstack.config)
         api(libs.bundles.protobuf.jvm)
         api(libs.bundles.grpc.jvm)
       }
@@ -106,6 +106,7 @@ android {
 }
 
 configureKmpProject()
+publishableKmpLib()
 
 listOf(
   tasks.named("compileKotlinJvm"),

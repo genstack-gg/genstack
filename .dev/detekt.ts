@@ -1,4 +1,4 @@
-import { $, BunFile } from "bun";
+import { $ } from "bun";
 import { join } from "node:path";
 
 const baseArgs = (await Bun.file(join(process.cwd(), '.dev', 'detekt.args')).text())

@@ -23,4 +23,4 @@ gradleEnterprise {
     }
 }
 
-rootProject.name = "config"
+rootProject.name = "genstack-config"

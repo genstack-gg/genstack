@@ -1,108 +1,110 @@
 [versions]
 agp = "8.7.3"
-kotlin-sdk = "2.1.0"
-ksp = "2.1.0-1.0.29"
-shadow = "8.3.5"
+buf-plugin = "0.10.2"
+buf-tool = "1.47.2"
+buildconfig-plugin = "5.5.1"
+buildhealth-plugin = "2.6.0"
+buildkite-tests-instrumented = "0.3.0"
+buildkite-tests-unit = "0.3.0"
+clikt = "5.0.2"
+dokka = "2.0.0-Beta"
+gradle-idea-ext = "1.1.9"
 grpc-java = "1.68.2"
 grpc-kotlin = "1.4.1"
 grpc-kotlin-lite = "1.0.0"
+jreleaser-plugin = "1.15.0"
+kotlin-sdk = "2.1.0"
+ksp = "2.1.0-1.0.29"
+micronaut-plugins = "4.4.4"
+nexus-plugin = "2.0.0"
+pkl-lib = "0.27.1"
+pkl-plugin = "0.27.1"
 protobuf-java = "4.29.1"
 protobuf-kotlin = "4.29.1"
 protobuf-plugin = "0.9.4"
-gradle-idea-ext = "1.1.9"
-micronaut-plugins = "4.4.4"
+serialization-yaml = "0.66.0"
+shadow = "8.3.5"
 testlogger = "4.0.0"
 versionCheck = "0.51.0"
-buildkite-tests-unit = "0.3.0"
-buildkite-tests-instrumented = "0.3.0"
-serialization-yaml = "0.66.0"
-clikt = "5.0.2"
-buf-tool = "1.47.2"
-buf-plugin = "0.10.2"
-pkl-lib = "0.27.1"
-pkl-plugin = "0.27.1"
-buildconfig-plugin = "5.5.1"
-nexus-plugin = "2.0.0"
 
 [libraries]
-pkl-core = { module = "org.pkl-lang:pkl-core", version.ref = "pkl-lib" }
-pkl-codegen-kotlin = { module = "org.pkl-lang:pkl-codegen-kotlin", version.ref = "pkl-lib" }
-pkl-config-java = { module = "org.pkl-lang:pkl-config-javav", version.ref = "pkl-lib" }
-pkl-doc = { module = "org.pkl-lang:pkl-doc", version.ref = "pkl-lib" }
-pkl-executor = { module = "org.pkl-lang:pkl-executor", version.ref = "pkl-lib" }
-pkl-commons-cli = { module = "org.pkl-lang:pkl-commons-cli", version.ref = "pkl-lib" }
-pkl-cli-java = { module = "org.pkl-lang:pkl-cli-java", version.ref = "pkl-lib" }
-pkl-gradle = { module = "org.pkl-lang:pkl-gradle", version.ref = "pkl-lib" }
-genstack-commons = { module = "dev.newco:commons" }
-build-plugins-buf = { module = "build.buf:buf-gradle-plugin", version.ref = "buf-plugin" }
-build-plugins-testlogging = { module = "com.adarshr:gradle-test-logger-plugin", version.ref = "testlogger" }
-build-plugins-android-multiplatform-library = { module = "com.android.kotlin.multiplatform.library:com.android.kotlin.multiplatform.library.gradle.plugin", version.ref = "agp" }
-build-plugins-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin-sdk" }
-build-plugins-kotlin-allopen = { module = "org.jetbrains.kotlin:kotlin-allopen", version.ref = "kotlin-sdk" }
-build-plugins-ideaExt = { module = "gradle.plugin.org.jetbrains.gradle.plugin.idea-ext:gradle-idea-ext", version.ref = "gradle-idea-ext" }
-build-plugins-micronaut-aot = { module = "io.micronaut.gradle:micronaut-aot-plugin", version.ref = "micronaut-plugins" }
-build-plugins-micronaut-gradle = { module = "io.micronaut.gradle:micronaut-gradle-plugin", version.ref = "micronaut-plugins" }
-build-plugins-versionCheck = { module = "com.github.ben-manes:gradle-versions-plugin", version.ref = "versionCheck" }
-build-plugins-buildkite-unittesting = { module = "com.buildkite.test-collector-android.unit-test-collector-plugin:com.buildkite.test-collector-android.unit-test-collector-plugin.gradle.plugin", version.ref = "buildkite-tests-unit" }
-build-plugins-buildkite-android = { module = "com.buildkite.test-collector-android:instrumented-test-collector", version.ref = "buildkite-tests-instrumented" }
-build-plugins-pkl = { module = "org.pkl-lang:org.pkl-lang.gradle.plugin", version.ref = "pkl-plugin" }
-build-plugins-buildconfig = { module = "com.github.gmazzo.buildconfig:plugin", version.ref = "buildconfig-plugin" }
-build-plugins-nexus = { module = "io.github.gradle-nexus:publish-plugin", version.ref = "nexus-plugin" }
-jakarta-validation-api = { module = "jakarta.validation:jakarta.validation-api" }
-serialization-yaml = { module = "com.charleskorn.kaml:kaml", version.ref = "serialization-yaml" }
 clikt = { module = "com.github.ajalt.clikt:clikt", version.ref = "clikt" }
 grpc-java-api = { module = "io.grpc:grpc-api", version.ref = "grpc-java" }
 grpc-java-protobuf = { module = "io.grpc:grpc-protobuf", version.ref = "grpc-java" }
 grpc-java-protobuf-lite = { module = "io.grpc:grpc-protobuf-lite", version.ref = "grpc-java" }
 grpc-kotlin-stub = { module = "io.grpc:grpc-kotlin-stub", version.ref = "grpc-kotlin" }
 grpc-kotlin-stub-lite = { module = "io.grpc:grpc-kotlin-stub-lite", version.ref = "grpc-kotlin-lite" }
+jakarta-validation-api = { module = "jakarta.validation:jakarta.validation-api" }
+pkl-cli-java = { module = "org.pkl-lang:pkl-cli-java", version.ref = "pkl-lib" }
+pkl-codegen-kotlin = { module = "org.pkl-lang:pkl-codegen-kotlin", version.ref = "pkl-lib" }
+pkl-commons-cli = { module = "org.pkl-lang:pkl-commons-cli", version.ref = "pkl-lib" }
+pkl-config-java = { module = "org.pkl-lang:pkl-config-javav", version.ref = "pkl-lib" }
+pkl-core = { module = "org.pkl-lang:pkl-core", version.ref = "pkl-lib" }
+pkl-doc = { module = "org.pkl-lang:pkl-doc", version.ref = "pkl-lib" }
+pkl-executor = { module = "org.pkl-lang:pkl-executor", version.ref = "pkl-lib" }
+pkl-gradle = { module = "org.pkl-lang:pkl-gradle", version.ref = "pkl-lib" }
 protobuf-java = { module = "com.google.protobuf:protobuf-java", version.ref = "protobuf-java" }
-protobuf-java-util = { module = "com.google.protobuf:protobuf-java-util", version.ref = "protobuf-java" }
 protobuf-java-lite = { module = "com.google.protobuf:protobuf-javalite", version.ref = "protobuf-java" }
+protobuf-java-util = { module = "com.google.protobuf:protobuf-java-util", version.ref = "protobuf-java" }
 protobuf-kotlin = { module = "com.google.protobuf:protobuf-kotlin", version.ref = "protobuf-kotlin" }
 protobuf-kotlin-lite = { module = "com.google.protobuf:protobuf-kotlin-lite", version.ref = "protobuf-kotlin" }
+serialization-yaml = { module = "com.charleskorn.kaml:kaml", version.ref = "serialization-yaml" }
+
+## Build-Only
+build-plugins-android-multiplatform-library = { module = "com.android.kotlin.multiplatform.library:com.android.kotlin.multiplatform.library.gradle.plugin", version.ref = "agp" }
+build-plugins-buf = { module = "build.buf:buf-gradle-plugin", version.ref = "buf-plugin" }
+build-plugins-buildconfig = { module = "com.github.gmazzo.buildconfig:plugin", version.ref = "buildconfig-plugin" }
+build-plugins-buildhealth = { module = "com.autonomousapps.build-health:com.autonomousapps.build-health.gradle.plugin", version.ref = "buildhealth-plugin" }
+build-plugins-buildkite-android = { module = "com.buildkite.test-collector-android:instrumented-test-collector", version.ref = "buildkite-tests-instrumented" }
+build-plugins-buildkite-unittesting = { module = "com.buildkite.test-collector-android.unit-test-collector-plugin:com.buildkite.test-collector-android.unit-test-collector-plugin.gradle.plugin", version.ref = "buildkite-tests-unit" }
+build-plugins-dokka = { module = "org.jetbrains.dokka:org.jetbrains.dokka.gradle.plugin", version.ref = "dokka" }
+build-plugins-ideaExt = { module = "gradle.plugin.org.jetbrains.gradle.plugin.idea-ext:gradle-idea-ext", version.ref = "gradle-idea-ext" }
+build-plugins-jreleaser = { module = "org.jreleaser:org.jreleaser.gradle.plugin", version.ref = "jreleaser-plugin" }
+build-plugins-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin-sdk" }
+build-plugins-kotlin-allopen = { module = "org.jetbrains.kotlin:kotlin-allopen", version.ref = "kotlin-sdk" }
+build-plugins-micronaut-aot = { module = "io.micronaut.gradle:micronaut-aot-plugin", version.ref = "micronaut-plugins" }
+build-plugins-micronaut-gradle = { module = "io.micronaut.gradle:micronaut-gradle-plugin", version.ref = "micronaut-plugins" }
+build-plugins-nexus = { module = "io.github.gradle-nexus:publish-plugin", version.ref = "nexus-plugin" }
+build-plugins-pkl = { module = "org.pkl-lang:org.pkl-lang.gradle.plugin", version.ref = "pkl-plugin" }
+build-plugins-testlogging = { module = "com.adarshr:gradle-test-logger-plugin", version.ref = "testlogger" }
+build-plugins-versionCheck = { module = "com.github.ben-manes:gradle-versions-plugin", version.ref = "versionCheck" }
+
+## Test-Only
+# (None at this time).
 
 [plugins]
-nexus = { id = "io.github.gradle-nexus.publish-plugin", version.ref = "nexus-plugin" }
-buildconfig = { id = "com.github.gmazzo.buildconfig", version.ref = "buildconfig-plugin" }
-pkl = { id = "org.pkl-lang", version.ref = "pkl-plugin" }
-buf = { id = "build.buf", version.ref = "buf-plugin" }
-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin-sdk" }
-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
-newco-conventions = { id = "newco.conventions" }
-newco-kmp = { id = "newco.kmp" }
-newco-jvm = { id = "newco.jvm" }
-newco-root = { id = "newco.root" }
-newco-pkl = { id = "newco.pkl" }
-testlogging = { id = "com.adarshr.test-logger" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 android-multiplatform-library = { id = "com.android.kotlin.multiplatform.library", version.ref = "agp" }
+buf = { id = "build.buf", version.ref = "buf-plugin" }
+buildconfig = { id = "com.github.gmazzo.buildconfig", version.ref = "buildconfig-plugin" }
+buildhealth = { id = "com.autonomousapps.build-health", version.ref = "buildhealth-plugin" }
+dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
+idea-ext = { id = "org.jetbrains.gradle.plugin.idea-ext", version.ref = "gradle-idea-ext" }
+jreleaser = { id = "org.jreleaser", version.ref = "jreleaser-plugin" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 micronaut-aot = { id = "io.micronaut.aot", version.ref = "micronaut-plugins" }
 micronaut-application = { id = "io.micronaut.application", version.ref = "micronaut-plugins" }
 micronaut-graalvm = { id = "io.micronaut.graalvm", version.ref = "micronaut-plugins" }
 micronaut-minimal-application = { id = "io.micronaut.minimal.application", version.ref = "micronaut-plugins" }
-shadow = { id = "com.github.johnrengelman.shadow", version.ref = "shadow" }
+newco-conventions = { id = "newco.conventions" }
+newco-jvm = { id = "newco.jvm" }
+newco-kmp = { id = "newco.kmp" }
+newco-pkl = { id = "newco.pkl" }
+newco-root = { id = "newco.root" }
+nexus = { id = "io.github.gradle-nexus.publish-plugin", version.ref = "nexus-plugin" }
+pkl = { id = "org.pkl-lang", version.ref = "pkl-plugin" }
 protobuf = { id = "com.google.protobuf", version.ref = "protobuf-plugin" }
-idea-ext = { id = "org.jetbrains.gradle.plugin.idea-ext", version.ref = "gradle-idea-ext" }
+serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin-sdk" }
+shadow = { id = "com.github.johnrengelman.shadow", version.ref = "shadow" }
+testlogging = { id = "com.adarshr.test-logger" }
 versionCheck = { id = "com.github.ben-manes.versions", version.ref = "versionCheck" }
 
 [bundles]
-
-protobuf-jvm = [
-    "protobuf-java",
-    "protobuf-java-util",
-    "protobuf-kotlin",
-]
 
 grpc-jvm = [
     "grpc-java-api",
     "grpc-java-protobuf",
     "grpc-kotlin-stub",
-]
-
-protobuf-lite = [
-    "protobuf-java-lite",
-    "protobuf-kotlin-lite",
 ]
 
 grpc-lite = [
@@ -112,9 +114,20 @@ grpc-lite = [
 ]
 
 pkl = [
-    "pkl-core",
-    "pkl-commons-cli",
     "pkl-cli-java",
     "pkl-codegen-kotlin",
+    "pkl-commons-cli",
+    "pkl-core",
     "pkl-gradle",
+]
+
+protobuf-jvm = [
+    "protobuf-java-util",
+    "protobuf-java",
+    "protobuf-kotlin",
+]
+
+protobuf-lite = [
+    "protobuf-java-lite",
+    "protobuf-kotlin-lite",
 ]

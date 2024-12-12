@@ -1,10 +1,17 @@
 {
   "name": "@genstack.js/memdb",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Implements in-memory database services for Genstack",
   "type": "module",
   "config": {
     "apiVersion": "v1"
+  },
+  "repository": {
+    "url": "https://github.com/genstack-gg/genstack"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
   },
   "engines": {
     "node": ">=18",
@@ -27,7 +34,8 @@
     "build:types": "tsc",
     "build": "bun run --bun ./scripts/build.mts && pnpm run build:types && pnpm run build:cli && pnpm run build:cli:all",
     "publish:npm": "npm publish --access public",
-    "check": "pnpm biome check && tsc --noEmit && pnpx publint"
+    "pkglint": "bun run ../builder/src/pkglint.mts",
+    "check": "pnpm biome check && tsc --noEmit && pnpx publint && pnpm run pkglint"
   },
   "exports": {
     "./bun": {
