@@ -1,6 +1,6 @@
 {
   "name": "@genstack.js/memdb",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Implements in-memory database services for Genstack",
   "type": "module",
   "config": {
@@ -8,6 +8,10 @@
   },
   "repository": {
     "url": "https://github.com/genstack-gg/genstack"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
   },
   "engines": {
     "node": ">=18",
