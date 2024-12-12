@@ -53,8 +53,8 @@ jobs:
         name: "@genstack.js/protocol"
         dry-run: ${{ inputs.dry-run }}
 
-  # NPM: `@genstack.js/sdk`
-  publish-npm-sdk:
+  # NPM: `@genstack.js/util`
+  publish-npm-util:
     name: "Publish"
     uses: ./.github/workflows/publish.npm.yml
     needs: [publish-npm-config, publish-npm-protocol]
@@ -64,6 +64,36 @@ jobs:
         id-token: write
         attestations: write
     with:
-        path: packages/sdk
-        name: "@genstack.js/sdk"
+        path: packages/util
+        name: "@genstack.js/util"
+        dry-run: ${{ inputs.dry-run }}
+
+  # NPM: `@genstack.js/memdb`
+  publish-npm-memdb:
+    name: "Publish"
+    uses: ./.github/workflows/publish.npm.yml
+    needs: [publish-npm-config, publish-npm-protocol, publish-npm-util]
+    permissions:
+        contents: read
+        packages: write
+        id-token: write
+        attestations: write
+    with:
+        path: packages/memdb
+        name: "@genstack.js/memdb"
+        dry-run: ${{ inputs.dry-run }}
+
+  # NPM: `@genstack.js/sdk`
+  publish-npm-sdk:
+    name: "Publish"
+    uses: ./.github/workflows/publish.npm.yml
+    needs: [publish-npm-config, publish-npm-protocol, publish-npm-memdb]
+    permissions:
+        contents: read
+        packages: write
+        id-token: write
+        attestations: write
+    with:
+        path: packages/memdb
+        name: "@genstack.js/memdb"
         dry-run: ${{ inputs.dry-run }}
