@@ -85,11 +85,7 @@ export function dataForMode(mode: api.QueryResultMode, value: api.AnyQueryResult
 export function encodeProtoResponse(format: CliOutputFormat, response: DatabaseQueryResponse): Uint8Array {
   switch (format) {
     case CliOutputFormat.JSON:
-      return new TextEncoder().encode(
-        toJsonString(DatabaseQueryResponseSchema, response, {
-          prettySpaces: 2,
-        }),
-      );
+      return new TextEncoder().encode(toJsonString(DatabaseQueryResponseSchema, response, { prettySpaces: 2 }));
     case CliOutputFormat.BINARY:
       return toBinary(DatabaseQueryResponseSchema, response);
 

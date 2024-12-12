@@ -593,12 +593,7 @@ describe("cli", () => {
     test("data for query types", () => {
       expect(cli.dataForMode(api.QueryResultMode.Empty, {})).toEqual({});
       expect(cli.dataForMode(api.QueryResultMode.Mutation, { count: 42 })).toEqual({ count: 42 });
-      expect(
-        cli.dataForMode(api.QueryResultMode.Error, {
-          error: "oops",
-          code: "42",
-        }),
-      ).toEqual({
+      expect(cli.dataForMode(api.QueryResultMode.Error, { error: "oops", code: "42" })).toEqual({
         error: "oops",
         code: "42",
       });
