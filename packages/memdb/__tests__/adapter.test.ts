@@ -9,11 +9,7 @@ import {
 
 export type AdapterFactory = () => DatabaseAdapter;
 
-async function checkedInsert(
-  adapter: DatabaseAdapter,
-  query: string,
-  expectedCount: number,
-) {
+async function checkedInsert(adapter: DatabaseAdapter, query: string, expectedCount: number) {
   const insert = await adapter.exec(query);
   expect(insert).not.toBeUndefined();
   expect(insert.mode).toBe(QueryResultMode.Mutation);
@@ -37,9 +33,7 @@ export default async function adapterSuite(factory: AdapterFactory) {
       const adapter = factory();
       await adapter.connect("default");
       expect(adapter.connected()).toBeTrue();
-      const result = await adapter.exec(
-        "CREATE TABLE test (id INTEGER PRIMARY KEY, name TEXT)",
-      );
+      const result = await adapter.exec("CREATE TABLE test (id INTEGER PRIMARY KEY, name TEXT)");
       expect(result).not.toBeUndefined();
       expect(result.mode).toBe(QueryResultMode.Empty);
     });
@@ -47,14 +41,10 @@ export default async function adapterSuite(factory: AdapterFactory) {
       const adapter = factory();
       await adapter.connect("default");
       expect(adapter.connected()).toBeTrue();
-      const result = await adapter.exec(
-        "CREATE TABLE test (id INTEGER PRIMARY KEY, name TEXT)",
-      );
+      const result = await adapter.exec("CREATE TABLE test (id INTEGER PRIMARY KEY, name TEXT)");
       expect(result).not.toBeUndefined();
       expect(result.mode).toBe(QueryResultMode.Empty);
-      const insert = await adapter.exec(
-        "INSERT INTO test (id, name) VALUES (1, 'test')",
-      );
+      const insert = await adapter.exec("INSERT INTO test (id, name) VALUES (1, 'test')");
       expect(insert).not.toBeUndefined();
       expect(insert.mode).toBe(QueryResultMode.Mutation);
       const mut = insert as QueryMutationResult;
@@ -74,9 +64,7 @@ export default async function adapterSuite(factory: AdapterFactory) {
       const adapter = factory();
       await adapter.connect("default");
       expect(adapter.connected()).toBeTrue();
-      const result = await adapter.exec(
-        "CREATE TABLE test (id INTEGER PRIMARY KEY, name TEXT)",
-      );
+      const result = await adapter.exec("CREATE TABLE test (id INTEGER PRIMARY KEY, name TEXT)");
       expect(result).not.toBeUndefined();
       expect(result.mode).toBe(QueryResultMode.Empty);
       const tables = await adapter.tables();
@@ -100,29 +88,13 @@ export default async function adapterSuite(factory: AdapterFactory) {
       const adapter = factory();
       await adapter.connect("default");
       expect(adapter.connected()).toBeTrue();
-      const result = await adapter.exec(
-        "CREATE TABLE test (id INTEGER PRIMARY KEY, name TEXT)",
-      );
+      const result = await adapter.exec("CREATE TABLE test (id INTEGER PRIMARY KEY, name TEXT)");
       expect(result).not.toBeUndefined();
       expect(result.mode).toBe(QueryResultMode.Empty);
-      await checkedInsert(
-        adapter,
-        "INSERT INTO test (id, name) VALUES (1, 'test')",
-        1,
-      );
-      await checkedInsert(
-        adapter,
-        "INSERT INTO test (id, name) VALUES (2, 'test2')",
-        1,
-      );
-      await checkedInsert(
-        adapter,
-        "INSERT INTO test (id, name) VALUES (3, 'test3')",
-        1,
-      );
-      const { result: data, response } = await adapter.query(
-        "SELECT id, name FROM test LIMIT 10;",
-      );
+      await checkedInsert(adapter, "INSERT INTO test (id, name) VALUES (1, 'test')", 1);
+      await checkedInsert(adapter, "INSERT INTO test (id, name) VALUES (2, 'test2')", 1);
+      await checkedInsert(adapter, "INSERT INTO test (id, name) VALUES (3, 'test3')", 1);
+      const { result: data, response } = await adapter.query("SELECT id, name FROM test LIMIT 10;");
       expect(response?.result?.ok).toBeTrue();
       expect(data).not.toBeUndefined();
       expect(data.mode).toBe(QueryResultMode.Rows);

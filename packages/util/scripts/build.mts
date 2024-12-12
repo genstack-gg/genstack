@@ -16,13 +16,7 @@ const baseConfig: esbuild.BuildOptions = {
   bundle: true,
   splitting: false,
   outbase: outPath,
-  external: [
-    "node:assert",
-    "node:child_process",
-    "node:fs",
-    "node:path",
-    "node:fs/promises",
-  ],
+  external: ["node:assert", "node:child_process", "node:fs", "node:path", "node:fs/promises"],
 };
 
 async function build(name: string, cfg: Partial<esbuild.BuildOptions> = {}) {

@@ -25,21 +25,12 @@ export type ColumnSpec = {
 /**
  * Union type of raw primitive values which are returnable from a compliant query.
  */
-export type RawPrimitiveValue =
-  | string
-  | number
-  | bigint
-  | Uint8Array
-  | boolean
-  | null
-  | undefined;
+export type RawPrimitiveValue = string | number | bigint | Uint8Array | boolean | null | undefined;
 
 /**
  * Raw row data is a record of raw primitive values.
  */
-export type RawRowData =
-  | Record<string, RawPrimitiveValue>
-  | RawPrimitiveValue[];
+export type RawRowData = Record<string, RawPrimitiveValue> | RawPrimitiveValue[];
 
 /**
  * Create table metadata to enclose in a query response.
@@ -48,11 +39,7 @@ export type RawRowData =
  * @param table Name of the table
  * @param columns Column specifications
  */
-export function createTableInfo(
-  identity: number,
-  table: string | null,
-  columns: ColumnSpec[],
-): DatabaseTable {
+export function createTableInfo(identity: number, table: string | null, columns: ColumnSpec[]): DatabaseTable {
   return create(DatabaseTableSchema, {
     name: table || undefined,
     identity: identity,
@@ -62,9 +49,7 @@ export function createTableInfo(
         ordinal: index,
         type: {
           case: "primitive",
-          value:
-            column.type ||
-            ColumnPrimitiveType.COLUMN_PRIMITIVE_TYPE_UNSPECIFIED,
+          value: column.type || ColumnPrimitiveType.COLUMN_PRIMITIVE_TYPE_UNSPECIFIED,
         },
       });
     }),
@@ -93,8 +78,7 @@ export function decodeCell(column: ColumnSpec, cell: any): Value {
       },
     });
   }
-  const columnDiagnostic = () =>
-    `{name: ${name}, index: ${index}, type: ${type}}`;
+  const columnDiagnostic = () => `{name: ${name}, index: ${index}, type: ${type}}`;
 
   // if we have a type, use it for guidance during decoding
   if (type) {
@@ -117,9 +101,7 @@ export function decodeCell(column: ColumnSpec, cell: any): Value {
         } else if (typeof cell === "bigint") {
           value = Number(cell);
         } else {
-          throw new Error(
-            `Failed to safely coerce 'INTEGER' column value to number (column: ${columnDiagnostic()})`,
-          );
+          throw new Error(`Failed to safely coerce 'INTEGER' column value to number (column: ${columnDiagnostic()})`);
         }
         return create(ValueSchema, {
           kind: {
@@ -139,9 +121,7 @@ export function decodeCell(column: ColumnSpec, cell: any): Value {
             },
           });
         }
-        throw new Error(
-          `Failed to safely coerce 'BLOB' column value to Uint8Array (column: ${columnDiagnostic()})`,
-        );
+        throw new Error(`Failed to safely coerce 'BLOB' column value to Uint8Array (column: ${columnDiagnostic()})`);
 
       default:
         throw new Error(`Unsupported or unrecognized column type: ${type}`);
@@ -166,9 +146,7 @@ export function decodeCell(column: ColumnSpec, cell: any): Value {
     });
   }
 
-  throw new Error(
-    `Unsupported cell type, or unhandled type coercion (column: ${columnDiagnostic()})`,
-  );
+  throw new Error(`Unsupported cell type, or unhandled type coercion (column: ${columnDiagnostic()})`);
 }
 
 /**
@@ -190,12 +168,7 @@ export function decodeCell(column: ColumnSpec, cell: any): Value {
  * @param columns Info about the columns in this row; if unavailable, an empty array should be provided.
  * @returns Structured row descriptor.
  */
-export function decodeRow(
-  table: number,
-  ordinal: number,
-  row: RawRowData,
-  columns?: ColumnSpec[],
-): DatabaseRow {
+export function decodeRow(table: number, ordinal: number, row: RawRowData, columns?: ColumnSpec[]): DatabaseRow {
   return create(DatabaseRowSchema, {
     table,
     ordinal: ordinal,
@@ -205,8 +178,7 @@ export function decodeRow(
     ).map(({ name, value }, index) => {
       const column = columns?.[index];
       const columnName = column?.name || name;
-      const columnType =
-        column?.type || ColumnPrimitiveType.COLUMN_PRIMITIVE_TYPE_UNSPECIFIED;
+      const columnType = column?.type || ColumnPrimitiveType.COLUMN_PRIMITIVE_TYPE_UNSPECIFIED;
       return create(DatabaseValueSchema, {
         data: {
           case: "value",

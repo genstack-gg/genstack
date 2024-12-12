@@ -31,12 +31,8 @@ const primitive = (column: string, value: any, type?: ColumnPrimitiveType) => {
 describe("decode cell with type guidance", async () => {
   describe("`TEXT`", () => {
     test("supports strings", () => {
-      expect(
-        primitive("sample", "hello", ColumnPrimitiveType.TEXT),
-      ).toBeString();
-      expect(primitive("sample", "hello", ColumnPrimitiveType.TEXT)).toBe(
-        "hello",
-      );
+      expect(primitive("sample", "hello", ColumnPrimitiveType.TEXT)).toBeString();
+      expect(primitive("sample", "hello", ColumnPrimitiveType.TEXT)).toBe("hello");
     });
     test("supports `null`", () => {
       expect(primitive("sample", null, ColumnPrimitiveType.TEXT)).toBeNull();
@@ -51,20 +47,12 @@ describe("decode cell with type guidance", async () => {
       expect(primitive("sample", null, ColumnPrimitiveType.INTEGER)).toBeNull();
     });
     test("supports bigint", () => {
-      expect(
-        primitive("sample", BigInt(42), ColumnPrimitiveType.INTEGER),
-      ).toBeNumber();
-      expect(primitive("sample", BigInt(42), ColumnPrimitiveType.INTEGER)).toBe(
-        42,
-      );
+      expect(primitive("sample", BigInt(42), ColumnPrimitiveType.INTEGER)).toBeNumber();
+      expect(primitive("sample", BigInt(42), ColumnPrimitiveType.INTEGER)).toBe(42);
     });
     test("rejects non-numerics", () => {
-      expect(() =>
-        primitive("sample", false, ColumnPrimitiveType.INTEGER),
-      ).toThrow();
-      expect(() =>
-        primitive("sample", "false", ColumnPrimitiveType.INTEGER),
-      ).toThrow();
+      expect(() => primitive("sample", false, ColumnPrimitiveType.INTEGER)).toThrow();
+      expect(() => primitive("sample", "false", ColumnPrimitiveType.INTEGER)).toThrow();
     });
   });
   describe("`REAL`", () => {
@@ -90,9 +78,7 @@ describe("decode cell with type guidance", async () => {
       expect(primitive("sample", null, ColumnPrimitiveType.BLOB)).toBeNull();
     });
     test("rejects other types", () => {
-      expect(() =>
-        primitive("sample", false, ColumnPrimitiveType.BLOB),
-      ).toThrow();
+      expect(() => primitive("sample", false, ColumnPrimitiveType.BLOB)).toThrow();
     });
   });
   test("fails on unrecognized column type", () => {
