@@ -87,15 +87,6 @@ jobs:
       security-events: write
       pull-requests: write
 
-  check-sonar:
-    name: "Check"
-    needs: [triage]
-    uses: ./.github/workflows/check.sonar.yml
-    secrets: inherit
-    permissions:
-      contents: read
-      pull-requests: read
-
   check-rust:
     name: "Check"
     needs: [triage]

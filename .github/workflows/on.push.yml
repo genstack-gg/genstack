@@ -37,11 +37,6 @@ jobs:
       fail-on-vuln: false
       scan-args: --config=./.dev/osv.toml --call-analysis=all --lockfile=pnpm-lock.yaml --lockfile=Cargo.lock --lockfile=*/gradle.lockfile
 
-  check-sonar:
-    name: "Check"
-    uses: ./.github/workflows/check.sonar.yml
-    secrets: inherit
-
   test-all:
     name: "Test"
     needs: [triage]
