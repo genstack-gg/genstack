@@ -1,18 +1,18 @@
-public final class dev/newco/api/config/Config {
-	public static final field INSTANCE Ldev/newco/api/config/Config;
+public final class gg/genstack/api/config/Config {
+	public static final field INSTANCE Lgg/genstack/api/config/Config;
 	public static final field VERSION Ljava/lang/String;
 }
 
-public final class dev/newco/api/config/Constants {
+public final class gg/genstack/api/config/Constants {
 	public static final field API_VERSION Ljava/lang/String;
-	public static final field INSTANCE Ldev/newco/api/config/Constants;
+	public static final field INSTANCE Lgg/genstack/api/config/Constants;
 	public static final field companyName Ljava/lang/String;
 	public static final field productName Ljava/lang/String;
 	public static final field productSlug Ljava/lang/String;
 }
 
-public final class dev/newco/api/config/PlatformConfig {
-	public static final field INSTANCE Ldev/newco/api/config/PlatformConfig;
+public final class gg/genstack/api/config/PlatformConfig {
+	public static final field INSTANCE Lgg/genstack/api/config/PlatformConfig;
 	public static final field PLATFORM Ljava/lang/String;
 }
 

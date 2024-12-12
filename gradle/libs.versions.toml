@@ -86,11 +86,11 @@ micronaut-aot = { id = "io.micronaut.aot", version.ref = "micronaut-plugins" }
 micronaut-application = { id = "io.micronaut.application", version.ref = "micronaut-plugins" }
 micronaut-graalvm = { id = "io.micronaut.graalvm", version.ref = "micronaut-plugins" }
 micronaut-minimal-application = { id = "io.micronaut.minimal.application", version.ref = "micronaut-plugins" }
-newco-conventions = { id = "newco.conventions" }
-newco-jvm = { id = "newco.jvm" }
-newco-kmp = { id = "newco.kmp" }
-newco-pkl = { id = "newco.pkl" }
-newco-root = { id = "newco.root" }
+genstack-conventions = { id = "genstack.conventions" }
+genstack-jvm = { id = "genstack.jvm" }
+genstack-kmp = { id = "genstack.kmp" }
+genstack-pkl = { id = "genstack.pkl" }
+genstack-root = { id = "genstack.root" }
 nexus = { id = "io.github.gradle-nexus.publish-plugin", version.ref = "nexus-plugin" }
 pkl = { id = "org.pkl-lang", version.ref = "pkl-plugin" }
 protobuf = { id = "com.google.protobuf", version.ref = "protobuf-plugin" }
