@@ -64,7 +64,7 @@ dependencyResolutionManagement {
   }
 }
 
-rootProject.name = "newco-build"
+rootProject.name = "genstack-build"
 
 gradleEnterprise {
     buildScan {

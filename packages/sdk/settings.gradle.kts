@@ -1,7 +1,7 @@
 @file:Suppress("UnstableApiUsage", "DSL_SCOPE_VIOLATION", "UNCHECKED_CAST")
 
 pluginManagement {
-  includeBuild("../../gradle/newco-build")
+  includeBuild("../../gradle/genstack-build")
 }
 
 plugins {
@@ -13,7 +13,7 @@ apply(from = "../../gradle/common-settings.gradle.kts")
 
 typealias GenstackConfig = (settings: Settings, path: String, block: Settings.() -> Unit) -> Unit
 (extra["genstack"] as GenstackConfig)(settings, "../") {
-  rootProject.name = "sdk"
+  rootProject.name = "genstack-sdk"
 }
 
 gradleEnterprise {
@@ -23,7 +23,7 @@ gradleEnterprise {
     }
 }
 
-rootProject.name = "sdk"
+rootProject.name = "genstack-sdk"
 
 includeBuild("../config")
 includeBuild("../protocol")

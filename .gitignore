@@ -2,7 +2,7 @@
 node_modules
 build/
 dist/
-gradle/newco-build/build/
+gradle/genstack-build/build/
 .dev/tests.xml
 .dev/tests*.xml
 .dev/*coverage*

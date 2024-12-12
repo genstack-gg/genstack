@@ -1,12 +1,14 @@
-@file:Suppress("ConstPropertyName", "unused", "MemberVisibilityCanBePrivate")
+@file:Suppress("ConstPropertyName", "unused", "MemberVisibilityCanBePrivate", "TooManyFunctions")
 
 import kotlin.io.path.absolutePathString
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
+import org.gradle.api.tasks.bundling.Jar
 import org.gradle.jvm.toolchain.JavaLanguageVersion
 import org.gradle.jvm.toolchain.JvmVendorSpec
 import org.gradle.kotlin.dsl.*
+import org.gradle.plugins.signing.SigningExtension
 import org.jetbrains.kotlin.gradle.dsl.JsModuleKind
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTargetDsl
@@ -22,14 +24,14 @@ public object GenstackBuild {
   public const val jsTarget: String = "es2015"
   public const val jsClasses: Boolean = true
   public const val kotlinSdk: String = "2.1.0"
-  public const val androidNamespacePrefix: String = "dev.newco.genstack"
-  public const val mavenGroup: String = "dev.newco"
+  public const val androidNamespacePrefix: String = "gg.genstack"
+  public const val mavenGroup: String = "gg.genstack"
   public const val wasm: Boolean = true
   public const val wasi: Boolean = false
   public const val nodejs: Boolean = true
   public const val typescript: Boolean = true
-  public const val enableiOS: Boolean = true
-  public const val enableArm64: Boolean = true
+  public const val enableiOS: Boolean = false
+  public const val enableArm64: Boolean = false
   public const val enableX64: Boolean = false
   public const val dependencyLocking: Boolean = true
   public const val dependencyVerification: Boolean = true
@@ -49,8 +51,14 @@ public object GenstackBuild {
 // Alias for build constants.
 private val constants = GenstackBuild
 
+// Artifact prefix.
+private const val artifactPrefix = "genstack"
+
 // Indicates whether we are running in CI.
 private val isCI = System.getenv("GITHUB_ACTIONS") != null || System.getenv("CI") != null
+
+private fun Project.isRelease(): Boolean =
+    findProperty("release") != null && properties["release"] != "false"
 
 /**
  * Build a consistent Android namespace string.
@@ -67,9 +75,8 @@ public fun androidNamespace(postfix: String): String =
  * Configures build features like dependency verification and locking.
  */
 public fun Project.configureDependencies(enabledConfigurations: List<Configuration> = emptyList()) {
-  val isRelease = findProperty("release") != null && properties["release"] != "false"
   enabledConfigurations.forEach {
-    if (constants.dependencyLocking && (!isCI || isRelease)) {
+    if (constants.dependencyLocking && (!isCI || isRelease())) {
       it.apply { resolutionStrategy.activateDependencyLocking() }
     }
   }
@@ -94,7 +101,7 @@ public fun Project.configureDependencies(enabledConfigurations: List<Configurati
   }
 
   project.configurations.all {
-    if ("detached" !in name) {
+    if ("detached" !in name && name != "classpath") {
       if (constants.dependencyVerification) {
         resolutionStrategy.enableDependencyVerification()
       }
@@ -190,7 +197,7 @@ public fun Project.configureKmpProject() {
  * @return String Maven coordinate.
  */
 public fun Project.genstackMaven(name: String, version: String? = null): String =
-    "${constants.mavenGroup}:$name${if (version != null) ":$version" else ""}"
+    "${constants.mavenGroup}:$artifactPrefix-$name${if (version != null) ":$version" else ""}"
 
 // Configures the Nexus Publishing plugin for Sonatype.
 private fun Project.configureNexus() {
@@ -203,6 +210,11 @@ private fun Project.configureNexus() {
       }
     }
   }
+}
+
+// Configures publishing via new APIs for Maven Central and JReleaser.
+private fun Project.configureJReleaser() {
+  // Coming soon.
 }
 
 // Configure the built-in Gradle publishing extension with target repositories.
@@ -220,15 +232,13 @@ private fun Project.publishingRepositories() {
   }
 }
 
-// Artifact prefix.
-private const val artifactPrefix = "genstack"
-
 // Transform an artifact name to include the expected prefix.
 private fun transformArtifactName(
     original: String,
     name: String,
-    prefix: String? = artifactPrefix
+    prefix: String = artifactPrefix,
 ): String {
+  if (name.startsWith(prefix)) return name // already prefixed
   // the artifact name might be:
   // `something` or
   // `something-{js,jvm...}`
@@ -237,11 +247,33 @@ private fun transformArtifactName(
   // `genstack-something` or
   // `genstack-something-{js,jvm...}`
   val postfix = original.removePrefix(name)
-  return if (prefix != null) {
-    "$prefix-$name$postfix"
-  } else {
-    name // no prefix, nothing to transform
+  return "$prefix-$name$postfix"
+}
+
+/**
+ * Configure a JAR task to be publishable.
+ *
+ * Custom manifest attributes are added, and other transformations at the JAR level are applied.
+ */
+public fun Jar.configurePublishableJar() {
+  manifest {
+    attributes["Implementation-Title"] = "GenstackProtocol"
+    attributes["Implementation-Version"] = "v1"
   }
+}
+
+/** Configure Dokka documentation for Javadoc JAR packaging. */
+public fun Project.dokkaJavadocJar() {
+  // tasks.register<Jar>("javadocJar") {
+  //   archiveClassifier.set("javadoc")
+  //   dependsOn(tasks.named("dokkaJavadoc"))
+  //   from(tasks.named("dokkaJavadoc"))
+  // }
+}
+
+/** Configure signing for publishing. */
+public fun Project.configureSigning() {
+  // Nothing yet.
 }
 
 /**
@@ -253,9 +285,7 @@ private fun transformArtifactName(
  *
  * KMP libraries generate additional Gradle metadata for multiplatform use.
  *
- * @param artifactName Name of the published version of the library; for example, if the library is
- *   known internally as `core`, this might be transformed to `genstack-core`. This name
- *   artifactDescription always just be `core`.
+ * @param artifactName Unqualified name of this publication; defaults to project name.
  * @param description Description of the library to include in the POM.
  * @param pomCallback Callback to configure the POM; optional.
  */
@@ -267,17 +297,29 @@ public fun Project.publishableKmpLib(
   // configure dist repositories
   publishingRepositories()
 
+  // javadoc jar + signing
+  dokkaJavadocJar()
+  configureSigning()
+
   // configure publishing
   configure<org.gradle.api.publish.PublishingExtension>() {
     publications {
       withType<org.gradle.api.publish.maven.MavenPublication>().all {
+        tasks.findByName("javadocJar")?.let { artifact(it) }
+        if (isRelease()) the<SigningExtension>().sign(this)
+
         pom {
+          artifactId = transformArtifactName(artifactName, artifactId.toString())
           description.set(artifactDescription)
           pomCallback?.invoke(this)
         }
       }
     }
   }
+
+  // configure publishable JARs with proper naming
+  tasks.withType<Jar>().configureEach { configurePublishableJar() }
+  afterEvaluate { tasks.withType<Jar>().configureEach { configurePublishableJar() } }
 }
 
 /**
@@ -301,14 +343,23 @@ public fun Project.publishableJvmLib(
   // configure dist repositories
   publishingRepositories()
 
+  // javadoc jar + signing
+  dokkaJavadocJar()
+  configureSigning()
+
+  // configure publishable JARs with proper naming
+  tasks.withType<Jar>().configureEach { configurePublishableJar() }
+
   // configure publishing
   configure<org.gradle.api.publish.PublishingExtension>() {
     publications {
       create<org.gradle.api.publish.maven.MavenPublication>("maven") {
+        the<SigningExtension>().sign(this)
         groupId = constants.mavenGroup
         artifactId = transformArtifactName(name, artifactName)
         version = project.version.toString()
-        artifact(tasks["jar"])
+        artifact(tasks.named("jar"))
+        artifact(tasks.named("javadocJar"))
 
         pom {
           name.set(artifactName)

@@ -33,7 +33,6 @@ pkl-executor = { module = "org.pkl-lang:pkl-executor", version.ref = "pkl-lib" }
 pkl-commons-cli = { module = "org.pkl-lang:pkl-commons-cli", version.ref = "pkl-lib" }
 pkl-cli-java = { module = "org.pkl-lang:pkl-cli-java", version.ref = "pkl-lib" }
 pkl-gradle = { module = "org.pkl-lang:pkl-gradle", version.ref = "pkl-lib" }
-genstack-commons = { module = "dev.newco:commons" }
 build-plugins-buf = { module = "build.buf:buf-gradle-plugin", version.ref = "buf-plugin" }
 build-plugins-testlogging = { module = "com.adarshr:gradle-test-logger-plugin", version.ref = "testlogger" }
 build-plugins-android-multiplatform-library = { module = "com.android.kotlin.multiplatform.library:com.android.kotlin.multiplatform.library.gradle.plugin", version.ref = "agp" }
@@ -69,11 +68,11 @@ pkl = { id = "org.pkl-lang", version.ref = "pkl-plugin" }
 buf = { id = "build.buf", version.ref = "buf-plugin" }
 serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin-sdk" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
-newco-conventions = { id = "newco.conventions" }
-newco-kmp = { id = "newco.kmp" }
-newco-jvm = { id = "newco.jvm" }
-newco-root = { id = "newco.root" }
-newco-pkl = { id = "newco.pkl" }
+genstack-conventions = { id = "genstack.conventions" }
+genstack-kmp = { id = "genstack.kmp" }
+genstack-jvm = { id = "genstack.jvm" }
+genstack-root = { id = "genstack.root" }
+genstack-pkl = { id = "genstack.pkl" }
 testlogging = { id = "com.adarshr.test-logger" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 android-multiplatform-library = { id = "com.android.kotlin.multiplatform.library", version.ref = "agp" }

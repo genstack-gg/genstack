@@ -6,9 +6,9 @@ plugins {
   `maven-publish`
   alias(libs.plugins.nexus)
   alias(libs.plugins.android.library)
-  alias(libs.plugins.newco.kmp)
+  alias(libs.plugins.genstack.kmp)
   alias(libs.plugins.idea.ext)
-  alias(libs.plugins.newco.root)
+  alias(libs.plugins.genstack.root)
 }
 
 java {
