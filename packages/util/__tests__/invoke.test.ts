@@ -10,8 +10,6 @@ describe("bin invoke", async () => {
     expect(bin.resolveInvokeBin(binpath, "doesnotexist")).rejects.toThrow();
   });
   test("should be able to invoke a valid bin", async () => {
-    expect(
-      bin.resolveInvokeBin(binpath, "executable", [], {}, true, "bash"),
-    ).resolves.toBeObject();
+    expect(bin.resolveInvokeBin(binpath, "executable", [], {}, true, "bash")).resolves.toBeObject();
   });
 });

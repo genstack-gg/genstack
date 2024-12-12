@@ -1,12 +1,7 @@
 import { Database, type Statement } from "bun:sqlite";
 import assert from "node:assert";
 import { create } from "@bufbuild/protobuf";
-import {
-  Code,
-  ConnectError,
-  type ConnectRouter,
-  type HandlerContext,
-} from "@connectrpc/connect";
+import { Code, ConnectError, type ConnectRouter, type HandlerContext } from "@connectrpc/connect";
 import pkg from "../package.json";
 
 import {
@@ -87,10 +82,7 @@ type ManagedConnection = {
 export function specFromName(name: string): string {
   // TODO: other names, name mapping mechanism
   if (name !== "default") {
-    throw new ConnectError(
-      "Please use 'default' as the database name",
-      Code.InvalidArgument,
-    );
+    throw new ConnectError("Please use 'default' as the database name", Code.InvalidArgument);
   }
   return ":memory:";
 }
@@ -107,10 +99,7 @@ export function compileStatement(db: Database, query: string): Statement {
   try {
     return db.prepare(query);
   } catch (err) {
-    throw new ConnectError(
-      "Invalid or unsupported query",
-      Code.InvalidArgument,
-    );
+    throw new ConnectError("Invalid or unsupported query", Code.InvalidArgument);
   }
 }
 
@@ -120,10 +109,7 @@ export function compileStatement(db: Database, query: string): Statement {
  * @param singleInfo Query result info
  * @return Database value
  */
-export function databaseValueForCell(
-  value: any,
-  column?: ColumnSpec,
-): DatabaseValue {
+export function databaseValueForCell(value: any, column?: ColumnSpec): DatabaseValue {
   // default: create a wrapping protobuf `Value` for this cell
   return create(DatabaseValueSchema, {
     data: {
@@ -155,9 +141,7 @@ export function buildQueryResponse(result: QueryResult): DatabaseQueryResponse {
 
     case QueryResultMode.Error: {
       const errInfo = result as QueryErrorResult;
-      throw new ConnectError(
-        `Query failed: [code=${errInfo.code || "none"}] ${errInfo.error || "no message"}`,
-      );
+      throw new ConnectError(`Query failed: [code=${errInfo.code || "none"}] ${errInfo.error || "no message"}`);
     }
 
     case QueryResultMode.Mutation: {
@@ -290,12 +274,7 @@ export class BunQueryObserver extends GenericQueryObserver {
           for (let i = 0; i < data.length; i++) {
             try {
               const row = data[i];
-              const decoded = this.decode(
-                tableInfo.identity,
-                columnSpecs,
-                i,
-                row,
-              );
+              const decoded = this.decode(tableInfo.identity, columnSpecs, i, row);
               rows.push(decoded);
 
               // dispatch: on-row callbacks
@@ -321,10 +300,7 @@ export class BunQueryObserver extends GenericQueryObserver {
       } else if (e && e instanceof Error) {
         err = e;
       } else {
-        err = new ConnectError(
-          e ? e.toString() : "Query failed for unknown reasons",
-          Code.Internal,
-        );
+        err = new ConnectError(e ? e.toString() : "Query failed for unknown reasons", Code.Internal);
       }
 
       // dispatch: on-end callbacks
@@ -364,10 +340,7 @@ const defaultBunDriverOptions: BunDriverOptions = {
 
 // Bind an async generator for query responses.
 function bindListenerFactory(
-  factory: (
-    req: DatabaseListenRequest,
-    ctx: HandlerContext,
-  ) => Generator<DatabaseListenEvent, void, unknown>,
+  factory: (req: DatabaseListenRequest, ctx: HandlerContext) => Generator<DatabaseListenEvent, void, unknown>,
 ) {
   return async function* (req: DatabaseListenRequest, ctx: HandlerContext) {
     yield* factory(req, ctx);
@@ -403,10 +376,7 @@ export function columnTypeToPrimitive(type: string): ColumnPrimitiveType {
     case "BLOB":
       return ColumnPrimitiveType.BLOB;
     default:
-      throw new ConnectError(
-        `Unsupported column type: ${type}`,
-        Code.InvalidArgument,
-      );
+      throw new ConnectError(`Unsupported column type: ${type}`, Code.InvalidArgument);
   }
 }
 
@@ -608,20 +578,14 @@ export default class BunDatabaseDriver implements DatabaseDriver {
       case "token": {
         const id = conn.spec.value.token;
         if (!this.#validateConnection(Number(id))) {
-          throw new ConnectError(
-            `Connection ${id} is not valid`,
-            Code.FailedPrecondition,
-          );
+          throw new ConnectError(`Connection ${id} is not valid`, Code.FailedPrecondition);
         }
         const resolved = this.activeConnections[Number(id)];
         if (!resolved) {
           throw new ConnectError(`Connection ${id} not found`, Code.NotFound);
         }
         if (!resolved.active) {
-          throw new ConnectError(
-            `Connection ${id} is inactive`,
-            Code.FailedPrecondition,
-          );
+          throw new ConnectError(`Connection ${id} is inactive`, Code.FailedPrecondition);
         }
         return resolved;
       }
@@ -630,10 +594,7 @@ export default class BunDatabaseDriver implements DatabaseDriver {
       case "connect": {
         const str = conn.spec.value.identifier.value;
         if (!str || typeof str !== "string") {
-          throw new ConnectError(
-            "Invalid connection string",
-            Code.InvalidArgument,
-          );
+          throw new ConnectError("Invalid connection string", Code.InvalidArgument);
         }
         const spec = specFromName(str);
         const avail = this.#availableConnection(spec);
@@ -643,10 +604,7 @@ export default class BunDatabaseDriver implements DatabaseDriver {
         try {
           return this.#connect(spec);
         } catch (e) {
-          throw new ConnectError(
-            `Failed to connect to ${spec}: ${e}`,
-            Code.FailedPrecondition,
-          );
+          throw new ConnectError(`Failed to connect to ${spec}: ${e}`, Code.FailedPrecondition);
         }
       }
 
@@ -670,19 +628,13 @@ export default class BunDatabaseDriver implements DatabaseDriver {
     // resolve the query string
     const str = query.spec?.value;
     if (!str || typeof str !== "string") {
-      throw new ConnectError(
-        "Unsupported query type or missing query",
-        Code.InvalidArgument,
-      );
+      throw new ConnectError("Unsupported query type or missing query", Code.InvalidArgument);
     }
 
     // resolve the active database
     const db = this.activeDatabases[conn.db].db;
     if (!db || !conn.active) {
-      throw new ConnectError(
-        "Invalid connection or connection failure",
-        Code.FailedPrecondition,
-      );
+      throw new ConnectError("Invalid connection or connection failure", Code.FailedPrecondition);
     }
 
     // create statement from query
@@ -698,41 +650,27 @@ export default class BunDatabaseDriver implements DatabaseDriver {
   setup(router: ConnectRouter) {
     return router.service(DatabaseService, {
       // impl: `DatabaseConnect(DatabaseConnectRequest) returns (DatabaseConnectResponse)`
-      databaseConnect: async (
-        req: DatabaseConnectRequest,
-        _ctx: HandlerContext,
-      ) => {
+      databaseConnect: async (req: DatabaseConnectRequest, _ctx: HandlerContext) => {
         // only a string spec is supported for now
         switch (req.identifier.case) {
           case "name": {
             const spec = specFromName(req.identifier.value);
             const conn = this.#connect(spec);
             const token = connectionToken(conn.id);
-            this.#debugLog(
-              `Connected to '${spec}' with token '${token.token}'`,
-            );
+            this.#debugLog(`Connected to '${spec}' with token '${token.token}'`);
             return create(DatabaseConnectResponseSchema, {
               connection: token,
             });
           }
         }
-        throw new ConnectError(
-          "Unsupported identifier type",
-          Code.Unimplemented,
-        );
+        throw new ConnectError("Unsupported identifier type", Code.Unimplemented);
       },
 
       // impl: `DatabaseQuery(DatabaseQueryRequest) returns (DatabaseQueryResponse)`
-      databaseQuery: async (
-        req: DatabaseQueryRequest,
-        _ctx: HandlerContext,
-      ) => {
+      databaseQuery: async (req: DatabaseQueryRequest, _ctx: HandlerContext) => {
         const spec = req.connection;
         if (!spec) {
-          throw new ConnectError(
-            "No connection specified",
-            Code.InvalidArgument,
-          );
+          throw new ConnectError("No connection specified", Code.InvalidArgument);
         }
 
         // resolve declared or enclosed connection
@@ -771,10 +709,7 @@ export default class BunDatabaseDriver implements DatabaseDriver {
           throw err;
         }
         if (!resp) {
-          throw new ConnectError(
-            "Query failed with no response",
-            Code.Internal,
-          );
+          throw new ConnectError("Query failed with no response", Code.Internal);
         }
         return resp;
       },
@@ -783,10 +718,7 @@ export default class BunDatabaseDriver implements DatabaseDriver {
       databaseList: async (req: DatabaseListRequest, _ctx: HandlerContext) => {
         const spec = req.connection;
         if (!spec) {
-          throw new ConnectError(
-            "No connection specified",
-            Code.InvalidArgument,
-          );
+          throw new ConnectError("No connection specified", Code.InvalidArgument);
         }
 
         // resolve declared or enclosed connection
@@ -810,32 +742,21 @@ export default class BunDatabaseDriver implements DatabaseDriver {
       },
 
       // impl: `DatabaseTables(DatabaseTablesRequest) returns (DatabaseTablesResponse)`
-      databaseTables: async (
-        req: DatabaseTablesRequest,
-        _ctx: HandlerContext,
-      ) => {
+      databaseTables: async (req: DatabaseTablesRequest, _ctx: HandlerContext) => {
         const spec = req.connection;
         if (!spec) {
-          throw new ConnectError(
-            "No connection specified",
-            Code.InvalidArgument,
-          );
+          throw new ConnectError("No connection specified", Code.InvalidArgument);
         }
 
         // resolve declared or enclosed connection
         const conn = this.#resolveConnection(spec);
         const db = this.activeDatabases[conn.db].db;
         if (!db) {
-          throw new ConnectError(
-            "Invalid connection or connection failure",
-            Code.FailedPrecondition,
-          );
+          throw new ConnectError("Invalid connection or connection failure", Code.FailedPrecondition);
         }
 
         const tables: DatabaseTable[] = db
-          .query(
-            "SELECT name, sql FROM sqlite_master WHERE type='table' ORDER BY name",
-          )
+          .query("SELECT name, sql FROM sqlite_master WHERE type='table' ORDER BY name")
           .all()
           .map(((tableRow: { name: string; sql: string }) => {
             const query = sql.parseQuery(tableRow.sql);
@@ -847,8 +768,7 @@ export default class BunDatabaseDriver implements DatabaseDriver {
             assert(query.statements[0].ast.table[0].table === tableRow.name);
             assert(Array.isArray(query.statements[0].ast.create_definitions));
             assert(query.statements[0].ast.create_definitions.length > 0);
-            const columnDefinitions =
-              query.statements[0].ast.create_definitions;
+            const columnDefinitions = query.statements[0].ast.create_definitions;
             const columns = columnDefinitions.map((column) => {
               assert(column.resource === "column");
               assert(column.column.type === "column_ref");

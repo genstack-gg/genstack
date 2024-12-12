@@ -7,10 +7,7 @@ import {
   createConnectRouter,
   createRouterTransport,
 } from "@connectrpc/connect";
-import {
-  type ConnectTransportOptions,
-  createConnectTransport,
-} from "@connectrpc/connect-web";
+import { type ConnectTransportOptions, createConnectTransport } from "@connectrpc/connect-web";
 import type { CommonTransportOptions } from "@connectrpc/connect/protocol";
 import { DatabaseService } from "@genstack.js/protocol/model/api/v1/db";
 
@@ -23,10 +20,7 @@ export const apiTargetDefault = "http://localhost:8000";
  * @param baseUrl Base URL to use for this transport; if none is provided, a default is used.
  * @returns Web-style (`fetch`) transport which uses the provided base URL.
  */
-export function createWebTransport(
-  baseUrl?: string,
-  opts?: Partial<ConnectTransportOptions>,
-): Transport {
+export function createWebTransport(baseUrl?: string, opts?: Partial<ConnectTransportOptions>): Transport {
   if (baseUrl) {
     // parse as a URL
     new URL(baseUrl);
@@ -75,8 +69,6 @@ export function createRouter(): ConnectRouter {
  * @param transport Transport to use for RPC calls
  * @returns Client for the `DatabaseService`
  */
-export function databaseClient(
-  transport: Transport,
-): Client<typeof DatabaseService> {
+export function databaseClient(transport: Transport): Client<typeof DatabaseService> {
   return createClient(DatabaseService, transport);
 }

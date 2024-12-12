@@ -51,10 +51,7 @@ export function labelForMode(mode: api.QueryResultMode): string {
 }
 
 // Return a vanilla JS data structure for a query response.
-export function dataForMode(
-  mode: api.QueryResultMode,
-  value: api.AnyQueryResult,
-): any {
+export function dataForMode(mode: api.QueryResultMode, value: api.AnyQueryResult): any {
   switch (mode) {
     case api.QueryResultMode.Empty:
       return {};
@@ -72,9 +69,7 @@ export function dataForMode(
     case api.QueryResultMode.Rows:
       return {
         tables: (value as api.QueryRowsResult).tables,
-        rows: (value as api.QueryRowsResult).rows.map((row) =>
-          toJson(DatabaseRowSchema, row),
-        ),
+        rows: (value as api.QueryRowsResult).rows.map((row) => toJson(DatabaseRowSchema, row)),
       };
     case api.QueryResultMode.Single:
       return {
@@ -87,17 +82,10 @@ export function dataForMode(
 }
 
 // Encode a response structure using the specified format, and return it as raw bytes.
-export function encodeProtoResponse(
-  format: CliOutputFormat,
-  response: DatabaseQueryResponse,
-): Uint8Array {
+export function encodeProtoResponse(format: CliOutputFormat, response: DatabaseQueryResponse): Uint8Array {
   switch (format) {
     case CliOutputFormat.JSON:
-      return new TextEncoder().encode(
-        toJsonString(DatabaseQueryResponseSchema, response, {
-          prettySpaces: 2,
-        }),
-      );
+      return new TextEncoder().encode(toJsonString(DatabaseQueryResponseSchema, response, { prettySpaces: 2 }));
     case CliOutputFormat.BINARY:
       return toBinary(DatabaseQueryResponseSchema, response);
 
@@ -125,9 +113,7 @@ export function encodeQueryResponse(
 
     // special case: encode as binary as normal, and then b64 encode it
     case CliOutputFormat.BINARY:
-      return Buffer.from(encodeProtoResponse(format, response)).toString(
-        "base64",
-      );
+      return Buffer.from(encodeProtoResponse(format, response)).toString("base64");
 
     default:
       throw new Error(`Unsupported format: ${format}`);
@@ -170,9 +156,7 @@ async function connectedAdapter(options: CliOptions, db = "default") {
 
   const protocol = tls ? "https" : "http";
   const urlPrefix = options.prefix || "";
-  const transport = client.createWebTransport(
-    `${protocol}://${host}:${port}${urlPrefix}`,
-  );
+  const transport = client.createWebTransport(`${protocol}://${host}:${port}${urlPrefix}`);
   const dbClient = client.databaseClient(transport);
   const adapter = api.useClient(dbClient);
   await adapter.connect(db);
@@ -240,11 +224,7 @@ export function outputForCommand(
 
       case CliOutputFormat.BINARY:
         // special case: when writing to `stderr`, we base64 encode the binary data
-        stderrWriter(
-          typeof output === "string"
-            ? output
-            : Buffer.from(output).toString("base64"),
-        );
+        stderrWriter(typeof output === "string" ? output : Buffer.from(output).toString("base64"));
         break;
     }
   }
@@ -265,11 +245,7 @@ const bunWriters = {
 };
 
 // Encode a generic protocol-buffers response into the target format.
-export function encodeResponseGeneric(
-  format: CliOutputFormat,
-  schema: any,
-  response: any,
-): Uint8Array | string {
+export function encodeResponseGeneric(format: CliOutputFormat, schema: any, response: any): Uint8Array | string {
   switch (format) {
     case CliOutputFormat.JSON:
       return toJsonString(schema, response, { prettySpaces: 2 });
@@ -289,25 +265,12 @@ export async function databaseTables(options: CliQueryOptions): Promise<void> {
   const tables = await adapter.tables();
   const elapsed = performance.now() - now;
   if (options.debug) console.info(`Tables list completed in ${elapsed}ms`);
-  const encoded = encodeResponseGeneric(
-    options.format || defaultFormat,
-    DatabaseTablesResponseSchema,
-    tables,
-  );
-  outputForCommand(
-    options.format || defaultFormat,
-    options,
-    encoded,
-    bunWriters,
-  );
+  const encoded = encodeResponseGeneric(options.format || defaultFormat, DatabaseTablesResponseSchema, tables);
+  outputForCommand(options.format || defaultFormat, options, encoded, bunWriters);
 }
 
 // Execute (run a query with no response) or apply (run a query with a response).
-export async function runQuery(
-  statement: boolean,
-  str: string,
-  options: CliQueryOptions,
-): Promise<void> {
+export async function runQuery(statement: boolean, str: string, options: CliQueryOptions): Promise<void> {
   const adapter = await connectedAdapter(options);
   const action = statement ? "Executing" : "Querying with";
   if (options.debug) console.info(`${action} '${str}'`);
@@ -315,17 +278,8 @@ export async function runQuery(
   const { result, response } = await adapter.query(str);
   const elapsed = performance.now() - now;
   if (options.debug) console.info(`Query completed in ${elapsed}ms`);
-  const encoded = encodeQueryResponse(
-    options.format || defaultFormat,
-    response,
-    result,
-  );
-  outputForCommand(
-    options.format || defaultFormat,
-    options,
-    encoded,
-    bunWriters,
-  );
+  const encoded = encodeQueryResponse(options.format || defaultFormat, response, result);
+  outputForCommand(options.format || defaultFormat, options, encoded, bunWriters);
 }
 
 // Wire together CLI support for the `serve` command.
@@ -386,10 +340,7 @@ export function setupCommands(program: Command) {
 // Create the CLI program.
 export function createCli() {
   const program = createCommand();
-  program
-    .name("memdb")
-    .description("In-memory database tools for Genstack")
-    .version(pkg.version);
+  program.name("memdb").description("In-memory database tools for Genstack").version(pkg.version);
   return setupCommands(program);
 }
 

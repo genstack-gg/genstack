@@ -35,9 +35,7 @@ describe("memdb client", async () => {
   describe("in-memory", async () => {
     test("create", async () => {
       const driver = BunDatabaseDriver.defaults();
-      const inMemory = client.createInMemoryTransport((routes) =>
-        driver.setup(routes),
-      );
+      const inMemory = client.createInMemoryTransport((routes) => driver.setup(routes));
       const db = client.databaseClient(inMemory);
       expect(db).not.toBeNull();
     });
@@ -58,17 +56,13 @@ describe("memdb client", async () => {
     });
     test("structural query (no response)", async () => {
       const db = await createConnect();
-      const result = await db.exec(
-        "CREATE TABLE test (id INTEGER PRIMARY KEY);",
-      );
+      const result = await db.exec("CREATE TABLE test (id INTEGER PRIMARY KEY);");
       expect(result).not.toBeNull();
       expect(result.mode).toBe(api.QueryResultMode.Empty);
     });
     test("mutation query (fill table)", async () => {
       const db = await createConnect();
-      const result = await db.exec(
-        "CREATE TABLE test (id INTEGER PRIMARY KEY);",
-      );
+      const result = await db.exec("CREATE TABLE test (id INTEGER PRIMARY KEY);");
       expect(result).not.toBeNull();
       expect(result.mode).toBe(api.QueryResultMode.Empty);
       const next = await db.exec("INSERT INTO test (id) VALUES (1);");
@@ -78,9 +72,7 @@ describe("memdb client", async () => {
     });
     test("select count (single result)", async () => {
       const db = await createConnect();
-      const result = await db.exec(
-        "CREATE TABLE test (id INTEGER PRIMARY KEY);",
-      );
+      const result = await db.exec("CREATE TABLE test (id INTEGER PRIMARY KEY);");
       expect(result).not.toBeNull();
       expect(result.mode).toBe(api.QueryResultMode.Empty);
       const next = await db.exec("INSERT INTO test (id) VALUES (1);");
@@ -95,20 +87,14 @@ describe("memdb client", async () => {
     });
     test("select row (single value)", async () => {
       const db = await createConnect();
-      const result = await db.exec(
-        "CREATE TABLE test (id INTEGER PRIMARY KEY, text TEXT);",
-      );
+      const result = await db.exec("CREATE TABLE test (id INTEGER PRIMARY KEY, text TEXT);");
       expect(result).not.toBeNull();
       expect(result.mode).toBe(api.QueryResultMode.Empty);
-      const next = await db.exec(
-        "INSERT INTO test (id, text) VALUES (1, 'hello');",
-      );
+      const next = await db.exec("INSERT INTO test (id, text) VALUES (1, 'hello');");
       expect(next).not.toBeNull();
       expect(next.mode).toBe(api.QueryResultMode.Mutation);
       expect((next as api.QueryMutationResult).count).toBe(1);
-      const { result: value } = await db.query(
-        "SELECT text FROM test LIMIT 1;",
-      );
+      const { result: value } = await db.query("SELECT text FROM test LIMIT 1;");
       expect(value).not.toBeNull();
       expect(value.mode).toBe(api.QueryResultMode.Single);
       expect((value as api.QuerySingleResult).value).toBeString();
@@ -116,26 +102,18 @@ describe("memdb client", async () => {
     });
     test("select rows (rows result)", async () => {
       const db = await createConnect();
-      const result = await db.exec(
-        "CREATE TABLE test (id INTEGER PRIMARY KEY, text TEXT);",
-      );
+      const result = await db.exec("CREATE TABLE test (id INTEGER PRIMARY KEY, text TEXT);");
       expect(result).not.toBeNull();
       expect(result.mode).toBe(api.QueryResultMode.Empty);
-      const next = await db.exec(
-        "INSERT INTO test (id, text) VALUES (1, 'hello');",
-      );
+      const next = await db.exec("INSERT INTO test (id, text) VALUES (1, 'hello');");
       expect(next).not.toBeNull();
       expect(next.mode).toBe(api.QueryResultMode.Mutation);
       expect((next as api.QueryMutationResult).count).toBe(1);
-      const next2 = await db.exec(
-        "INSERT INTO test (id, text) VALUES (2, 'hello2');",
-      );
+      const next2 = await db.exec("INSERT INTO test (id, text) VALUES (2, 'hello2');");
       expect(next2).not.toBeNull();
       expect(next2.mode).toBe(api.QueryResultMode.Mutation);
       expect((next2 as api.QueryMutationResult).count).toBe(1);
-      const next3 = await db.exec(
-        "INSERT INTO test (id, text) VALUES (3, 'hello3');",
-      );
+      const next3 = await db.exec("INSERT INTO test (id, text) VALUES (3, 'hello3');");
       expect(next3).not.toBeNull();
       expect(next3.mode).toBe(api.QueryResultMode.Mutation);
       expect((next3 as api.QueryMutationResult).count).toBe(1);

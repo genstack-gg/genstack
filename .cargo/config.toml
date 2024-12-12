@@ -18,8 +18,6 @@ SQLITE3_INCLUDE_DIR = { value = "third_party/sqlite/install/include", relative =
 
 [registries.buf]
 index = "sparse+https://buf.build/gen/cargo/"
-credential-provider = "cargo:token"
-token = "Bearer 05a7bfb510d971ad1e14cf9116d2beabfb9977e35cd5cd7dd04dde71490042c5"
 
 [target.aarch64-linux-android]
 linker = "aarch64-linux-android34-clang"

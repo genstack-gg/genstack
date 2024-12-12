@@ -21,28 +21,14 @@ export type PackageManifest = {
   repository: string;
 };
 
-function enforce(
-  obj: Partial<PackageManifest>,
-  key: string,
-  message: string,
-  validator: (value: any) => boolean,
-) {
+function enforce(obj: Partial<PackageManifest>, key: string, message: string, validator: (value: any) => boolean) {
   if (!validator(obj[key])) {
     throw new Error(message);
   }
 }
 
-function deps(
-  obj: PackageManifest,
-  message: string,
-  validator: (pkg: string, version: any) => boolean,
-) {
-  const depsProps = [
-    "dependencies",
-    "devDependencies",
-    "peerDependencies",
-    "optionalDependencies",
-  ];
+function deps(obj: PackageManifest, message: string, validator: (pkg: string, version: any) => boolean) {
+  const depsProps = ["dependencies", "devDependencies", "peerDependencies", "optionalDependencies"];
   for (const prop of depsProps) {
     const deps = obj[prop];
     if (!deps) {
@@ -65,33 +51,9 @@ export { validatePackageJson };
  * @param pkg Package JSON object to validate.
  */
 export default function validatePackageJson(pkg: PackageManifest) {
-  enforce(
-    pkg,
-    "name",
-    "Package name must be a string",
-    (value) => typeof value === "string",
-  );
-  enforce(
-    pkg,
-    "version",
-    "Package version must be a string",
-    (value) => typeof value === "string",
-  );
-  enforce(
-    pkg,
-    "description",
-    "Package description must be a string",
-    (value) => typeof value === "string",
-  );
-  enforce(
-    pkg,
-    "type",
-    'Package type must be set to "module"',
-    (value) => value === "module",
-  );
-  deps(
-    pkg,
-    "Dependency versions must not mention `workspace`",
-    (_pkg, version) => !version.includes("workspace"),
-  );
+  enforce(pkg, "name", "Package name must be a string", (value) => typeof value === "string");
+  enforce(pkg, "version", "Package version must be a string", (value) => typeof value === "string");
+  enforce(pkg, "description", "Package description must be a string", (value) => typeof value === "string");
+  enforce(pkg, "type", 'Package type must be set to "module"', (value) => value === "module");
+  deps(pkg, "Dependency versions must not mention `workspace`", (_pkg, version) => !version.includes("workspace"));
 }

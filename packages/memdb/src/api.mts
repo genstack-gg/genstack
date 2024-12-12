@@ -1,10 +1,6 @@
 import * as dbClient from "@/client.mjs";
 import { create } from "@bufbuild/protobuf";
-import {
-  type Client,
-  ConnectError,
-  type ConnectRouter,
-} from "@connectrpc/connect";
+import { type Client, ConnectError, type ConnectRouter } from "@connectrpc/connect";
 import {
   ConnectionTokenSchema,
   DatabaseConnectRequestSchema,
@@ -241,11 +237,7 @@ export type AnyQueryResult =
  *
  * Union type for all possible query results from an `exec` call.
  */
-export type ExecQueryResult =
-  | QueryEmptyResult
-  | QuerySingleResult
-  | QueryMutationResult
-  | QueryErrorResult;
+export type ExecQueryResult = QueryEmptyResult | QuerySingleResult | QueryMutationResult | QueryErrorResult;
 
 /**
  * ## Query Observer
@@ -329,12 +321,7 @@ export abstract class GenericQueryObserver implements QueryObserver {
    * @param index Index of the row in the result set
    * @param stmt Query result
    */
-  decode(
-    tableIndex: number,
-    columns: ColumnSpec[],
-    index: number,
-    stmt: any,
-  ): DatabaseRow {
+  decode(tableIndex: number, columns: ColumnSpec[], index: number, stmt: any): DatabaseRow {
     return decodeRow(tableIndex, index, stmt, columns);
   }
 
@@ -439,11 +426,7 @@ export function connectionTokenOf(token: number): DatabaseConnection {
  * @param statement Whether the query is a statement or a query
  * @return Database query request
  */
-export function queryWithToken(
-  token: number,
-  value: string,
-  statement = false,
-): DatabaseQueryRequest {
+export function queryWithToken(token: number, value: string, statement = false): DatabaseQueryRequest {
   return create(DatabaseQueryRequestSchema, {
     connection: connectionTokenOf(token),
     query: create(DatabaseQuerySchema, {
@@ -456,10 +439,7 @@ export function queryWithToken(
   });
 }
 
-export type AdapterQueryReturn = {
-  result: AnyQueryResult;
-  response: DatabaseQueryResponse;
-};
+export type AdapterQueryReturn = { result: AnyQueryResult; response: DatabaseQueryResponse };
 
 /**
  * ## Generic Database Adapter
@@ -537,18 +517,14 @@ export class DatabaseClientAdapter implements DatabaseAdapter {
       case "mutation":
         return {
           mode: QueryResultMode.Mutation,
-          count: resp.result?.result?.value?.result?.value
-            ? Number(resp.result.result.value.result.value)
-            : 0,
+          count: resp.result?.result?.value?.result?.value ? Number(resp.result.result.value.result.value) : 0,
         };
     }
     console.info("would build response", {
       statement,
       resp,
     });
-    throw new Error(
-      `not yet implemented (query client exec): ${resp.result?.result?.case}`,
-    );
+    throw new Error(`not yet implemented (query client exec): ${resp.result?.result?.case}`);
   }
 
   // Retrieve a list of tables in the attached database.
@@ -604,9 +580,7 @@ export class DatabaseClientAdapter implements DatabaseAdapter {
           response: resp,
           result: {
             mode: QueryResultMode.Mutation,
-            count: resp.result?.result?.value?.result?.value
-              ? Number(resp.result.result.value.result.value)
-              : 0,
+            count: resp.result?.result?.value?.result?.value ? Number(resp.result.result.value.result.value) : 0,
           } satisfies QueryMutationResult,
         };
       case "single": {
@@ -630,9 +604,7 @@ export class DatabaseClientAdapter implements DatabaseAdapter {
                   } satisfies QuerySingleResult,
                 };
               default:
-                throw new Error(
-                  "Single result is not a valid value (unexpected)",
-                );
+                throw new Error("Single result is not a valid value (unexpected)");
             }
           }
           case "blob": {
@@ -678,9 +650,7 @@ export class DatabaseClientAdapter implements DatabaseAdapter {
         };
       }
     }
-    throw new Error(
-      `not yet implemented (query client recv): ${resp.result?.result?.case}`,
-    );
+    throw new Error(`not yet implemented (query client recv): ${resp.result?.result?.case}`);
   }
 }
 
@@ -700,9 +670,7 @@ export function createClientAdapter(
     effective = client;
   } else {
     const driver = driverFactory();
-    const inMemory = dbClient.createInMemoryTransport((routes) =>
-      driver.setup(routes),
-    );
+    const inMemory = dbClient.createInMemoryTransport((routes) => driver.setup(routes));
     const db = dbClient.databaseClient(inMemory);
     effective = db;
   }
@@ -715,8 +683,6 @@ export function createClientAdapter(
  * @param client Client instance; if one is not provided, one will be created using the provided driver
  * @return Database client adapter
  */
-export function useClient(
-  client: Client<typeof DatabaseService>,
-): DatabaseClientAdapter {
+export function useClient(client: Client<typeof DatabaseService>): DatabaseClientAdapter {
   return new DatabaseClientAdapter(client);
 }

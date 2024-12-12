@@ -1,5 +1,30 @@
 {
   "$schema": "node_modules/lerna/schemas/lerna-schema.json",
-  "version": "0.0.0",
-  "npmClient": "pnpm"
+  "version": "0.1.2",
+  "npmClient": "pnpm",
+  "packages": ["commons", "engine", "substrate", "app", "packages/*"],
+  "changelog": true,
+  "changelogPreset": {
+    "name": "conventionalcommits",
+    "issueUrlFormat": "{{host}}/{{owner}}/{{repository}}/issues/{{id}}"
+  },
+  "command": {
+    "version": {
+      "allowBranch": "main",
+      "conventionalCommits": true,
+      "signGitCommit": true,
+      "signGitTag": true,
+      "signoffGitCommit": true,
+      "gitTagVersion": true,
+      "push": false,
+      "forceGitTag": true,
+      "message": "chore(release): bump → `%v`"
+    },
+    "publish": {
+      "npmClient": "npm",
+      "private": false,
+      "summaryFile": "./.dev/release-summary.json",
+      "assets": ["README.md", "package.json"]
+    }
+  }
 }

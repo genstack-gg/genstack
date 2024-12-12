@@ -80,11 +80,7 @@ export function formatBinName(name: string, platform: BinaryPlatform): string {
  * @param platform Platform of the binary.
  * @returns Platform-qualified binary path.
  */
-export function formatBinPath(
-  path: string,
-  name: string,
-  platform: BinaryPlatform,
-): string {
+export function formatBinPath(path: string, name: string, platform: BinaryPlatform): string {
   const joined = join(path, formatBinName(name, platform));
   debugLog(`Formatted binary path: ${joined}`);
   return joined;
@@ -97,29 +93,20 @@ export function formatBinPath(
  * @param name Name of the binary (unqualified).
  * @return Platform-qualified binary name within the provided path.
  */
-export function resolveBin(
-  path: string,
-  name: string,
-): { name: string; path: string } {
+export function resolveBin(path: string, name: string): { name: string; path: string } {
   const osName = process.platform;
   const arch = process.arch;
 
   let platform: BinaryPlatform;
   switch (osName.trim().toLowerCase()) {
     case "linux":
-      platform = arm64Tags.has(arch)
-        ? BinaryPlatform.LINUX_ARM64
-        : BinaryPlatform.LINUX_AMD64;
+      platform = arm64Tags.has(arch) ? BinaryPlatform.LINUX_ARM64 : BinaryPlatform.LINUX_AMD64;
       break;
     case "macos":
-      platform = arm64Tags.has(arch)
-        ? BinaryPlatform.MACOS_ARM64
-        : BinaryPlatform.MACOS_AMD64;
+      platform = arm64Tags.has(arch) ? BinaryPlatform.MACOS_ARM64 : BinaryPlatform.MACOS_AMD64;
       break;
     case "win32":
-      platform = arm64Tags.has(arch)
-        ? BinaryPlatform.WINDOWS_ARM64
-        : BinaryPlatform.WINDOWS_AMD64;
+      platform = arm64Tags.has(arch) ? BinaryPlatform.WINDOWS_ARM64 : BinaryPlatform.WINDOWS_AMD64;
       break;
     default:
       throw new Error(`Unsupported platform: ${osName} / ${arch}`);
@@ -143,15 +130,10 @@ export function resolveBin(
  * @throws Error if the binary is not found or is not executable.
  * @return Platform-qualified binary name within the provided path.
  */
-export async function resolveBinChecked(
-  path: string,
-  name: string,
-): Promise<{ name: string; path: string }> {
+export async function resolveBinChecked(path: string, name: string): Promise<{ name: string; path: string }> {
   const { name: resolvedName, path: resolvedPath } = resolveBin(path, name);
   if (!existsSync(resolvedPath)) {
-    throw new Error(
-      `Binary not found: ${resolvedPath} (name: ${resolvedName})`,
-    );
+    throw new Error(`Binary not found: ${resolvedPath} (name: ${resolvedName})`);
   }
 
   debugLog("Resolved binary path exists:", resolvedPath);

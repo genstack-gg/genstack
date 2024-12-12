@@ -1,7 +1,7 @@
 @file:Suppress("UnstableApiUsage", "DSL_SCOPE_VIOLATION", "UNCHECKED_CAST")
 
 pluginManagement {
-  includeBuild("../../gradle/newco-build")
+  includeBuild("../../gradle/genstack-build")
 }
 
 plugins {
@@ -23,4 +23,4 @@ gradleEnterprise {
     }
 }
 
-rootProject.name = "config"
+rootProject.name = "genstack-config"

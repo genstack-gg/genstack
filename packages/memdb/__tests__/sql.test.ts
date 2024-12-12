@@ -6,9 +6,7 @@ describe("sql parser", () => {
   test("throws for invalid queries", () => {
     expect(() => sql.parseQuery("SELECT * FROM x WHERE a = 1 AND")).toThrow();
     expect(() => sql.parseQuery("bunk")).toThrow();
-    expect(() =>
-      sql.parseQuery("SELECT * FROM x WHERE a = 1; SELECT"),
-    ).toThrow();
+    expect(() => sql.parseQuery("SELECT * FROM x WHERE a = 1; SELECT")).toThrow();
     expect(() => sql.parseQuery(";")).toThrow();
   });
   describe("`SELECT`", () => {
@@ -175,30 +173,14 @@ describe("sql parser", () => {
       expect(stmt.type).toBe(sql.QueryType.DQL);
       const access = sql.requisiteAccessForQueryType(stmt.type);
       expect(access).toBe(api.DatabaseAccessLevel.READ_ONLY);
-      expect(
-        sql.checkQueryAccess(parsed, api.DatabaseAccessLevel.ANONYMOUS),
-      ).toBeFalse();
-      expect(
-        sql.checkQueryAccess(parsed, api.DatabaseAccessLevel.READ_ONLY),
-      ).toBeTrue();
-      expect(
-        sql.checkQueryAccess(parsed, api.DatabaseAccessLevel.READ_WRITE),
-      ).toBeTrue();
-      expect(
-        sql.checkQueryAccess(parsed, api.DatabaseAccessLevel.ADMIN),
-      ).toBeTrue();
-      expect(() =>
-        sql.parseCheckQuery(stmt.sql, api.DatabaseAccessLevel.ANONYMOUS),
-      ).toThrow();
-      expect(() =>
-        sql.parseCheckQuery(stmt.sql, api.DatabaseAccessLevel.READ_ONLY),
-      ).not.toThrow();
-      expect(() =>
-        sql.parseCheckQuery(stmt.sql, api.DatabaseAccessLevel.READ_WRITE),
-      ).not.toThrow();
-      expect(() =>
-        sql.parseCheckQuery(stmt.sql, api.DatabaseAccessLevel.ADMIN),
-      ).not.toThrow();
+      expect(sql.checkQueryAccess(parsed, api.DatabaseAccessLevel.ANONYMOUS)).toBeFalse();
+      expect(sql.checkQueryAccess(parsed, api.DatabaseAccessLevel.READ_ONLY)).toBeTrue();
+      expect(sql.checkQueryAccess(parsed, api.DatabaseAccessLevel.READ_WRITE)).toBeTrue();
+      expect(sql.checkQueryAccess(parsed, api.DatabaseAccessLevel.ADMIN)).toBeTrue();
+      expect(() => sql.parseCheckQuery(stmt.sql, api.DatabaseAccessLevel.ANONYMOUS)).toThrow();
+      expect(() => sql.parseCheckQuery(stmt.sql, api.DatabaseAccessLevel.READ_ONLY)).not.toThrow();
+      expect(() => sql.parseCheckQuery(stmt.sql, api.DatabaseAccessLevel.READ_WRITE)).not.toThrow();
+      expect(() => sql.parseCheckQuery(stmt.sql, api.DatabaseAccessLevel.ADMIN)).not.toThrow();
     });
     test("`INSERT ...` → DML → READ_WRITE", () => {
       const parsed = sql.parseQuery("INSERT INTO x (a, b, c) VALUES (1, 2, 3)");
@@ -210,30 +192,14 @@ describe("sql parser", () => {
       expect(stmt.type).toBe(sql.QueryType.DML);
       const access = sql.requisiteAccessForQueryType(stmt.type);
       expect(access).toBe(api.DatabaseAccessLevel.READ_WRITE);
-      expect(
-        sql.checkQueryAccess(parsed, api.DatabaseAccessLevel.ANONYMOUS),
-      ).toBeFalse();
-      expect(
-        sql.checkQueryAccess(parsed, api.DatabaseAccessLevel.READ_ONLY),
-      ).toBeFalse();
-      expect(
-        sql.checkQueryAccess(parsed, api.DatabaseAccessLevel.READ_WRITE),
-      ).toBeTrue();
-      expect(
-        sql.checkQueryAccess(parsed, api.DatabaseAccessLevel.ADMIN),
-      ).toBeTrue();
-      expect(() =>
-        sql.parseCheckQuery(stmt.sql, api.DatabaseAccessLevel.ANONYMOUS),
-      ).toThrow();
-      expect(() =>
-        sql.parseCheckQuery(stmt.sql, api.DatabaseAccessLevel.READ_ONLY),
-      ).toThrow();
-      expect(() =>
-        sql.parseCheckQuery(stmt.sql, api.DatabaseAccessLevel.READ_WRITE),
-      ).not.toThrow();
-      expect(() =>
-        sql.parseCheckQuery(stmt.sql, api.DatabaseAccessLevel.ADMIN),
-      ).not.toThrow();
+      expect(sql.checkQueryAccess(parsed, api.DatabaseAccessLevel.ANONYMOUS)).toBeFalse();
+      expect(sql.checkQueryAccess(parsed, api.DatabaseAccessLevel.READ_ONLY)).toBeFalse();
+      expect(sql.checkQueryAccess(parsed, api.DatabaseAccessLevel.READ_WRITE)).toBeTrue();
+      expect(sql.checkQueryAccess(parsed, api.DatabaseAccessLevel.ADMIN)).toBeTrue();
+      expect(() => sql.parseCheckQuery(stmt.sql, api.DatabaseAccessLevel.ANONYMOUS)).toThrow();
+      expect(() => sql.parseCheckQuery(stmt.sql, api.DatabaseAccessLevel.READ_ONLY)).toThrow();
+      expect(() => sql.parseCheckQuery(stmt.sql, api.DatabaseAccessLevel.READ_WRITE)).not.toThrow();
+      expect(() => sql.parseCheckQuery(stmt.sql, api.DatabaseAccessLevel.ADMIN)).not.toThrow();
     });
     test("`UPDATE ...` → DML → READ_WRITE", () => {
       const parsed = sql.parseQuery("UPDATE x SET a = 1, b = 2, c = 3");
@@ -245,30 +211,14 @@ describe("sql parser", () => {
       expect(stmt.type).toBe(sql.QueryType.DML);
       const access = sql.requisiteAccessForQueryType(stmt.type);
       expect(access).toBe(api.DatabaseAccessLevel.READ_WRITE);
-      expect(
-        sql.checkQueryAccess(parsed, api.DatabaseAccessLevel.ANONYMOUS),
-      ).toBeFalse();
-      expect(
-        sql.checkQueryAccess(parsed, api.DatabaseAccessLevel.READ_ONLY),
-      ).toBeFalse();
-      expect(
-        sql.checkQueryAccess(parsed, api.DatabaseAccessLevel.READ_WRITE),
-      ).toBeTrue();
-      expect(
-        sql.checkQueryAccess(parsed, api.DatabaseAccessLevel.ADMIN),
-      ).toBeTrue();
-      expect(() =>
-        sql.parseCheckQuery(stmt.sql, api.DatabaseAccessLevel.ANONYMOUS),
-      ).toThrow();
-      expect(() =>
-        sql.parseCheckQuery(stmt.sql, api.DatabaseAccessLevel.READ_ONLY),
-      ).toThrow();
-      expect(() =>
-        sql.parseCheckQuery(stmt.sql, api.DatabaseAccessLevel.READ_WRITE),
-      ).not.toThrow();
-      expect(() =>
-        sql.parseCheckQuery(stmt.sql, api.DatabaseAccessLevel.ADMIN),
-      ).not.toThrow();
+      expect(sql.checkQueryAccess(parsed, api.DatabaseAccessLevel.ANONYMOUS)).toBeFalse();
+      expect(sql.checkQueryAccess(parsed, api.DatabaseAccessLevel.READ_ONLY)).toBeFalse();
+      expect(sql.checkQueryAccess(parsed, api.DatabaseAccessLevel.READ_WRITE)).toBeTrue();
+      expect(sql.checkQueryAccess(parsed, api.DatabaseAccessLevel.ADMIN)).toBeTrue();
+      expect(() => sql.parseCheckQuery(stmt.sql, api.DatabaseAccessLevel.ANONYMOUS)).toThrow();
+      expect(() => sql.parseCheckQuery(stmt.sql, api.DatabaseAccessLevel.READ_ONLY)).toThrow();
+      expect(() => sql.parseCheckQuery(stmt.sql, api.DatabaseAccessLevel.READ_WRITE)).not.toThrow();
+      expect(() => sql.parseCheckQuery(stmt.sql, api.DatabaseAccessLevel.ADMIN)).not.toThrow();
     });
     test("`DELETE ...` → DML → READ_WRITE", () => {
       const parsed = sql.parseQuery("DELETE FROM x WHERE a = 1");
@@ -280,30 +230,14 @@ describe("sql parser", () => {
       expect(stmt.type).toBe(sql.QueryType.DML);
       const access = sql.requisiteAccessForQueryType(stmt.type);
       expect(access).toBe(api.DatabaseAccessLevel.READ_WRITE);
-      expect(
-        sql.checkQueryAccess(parsed, api.DatabaseAccessLevel.ANONYMOUS),
-      ).toBeFalse();
-      expect(
-        sql.checkQueryAccess(parsed, api.DatabaseAccessLevel.READ_ONLY),
-      ).toBeFalse();
-      expect(
-        sql.checkQueryAccess(parsed, api.DatabaseAccessLevel.READ_WRITE),
-      ).toBeTrue();
-      expect(
-        sql.checkQueryAccess(parsed, api.DatabaseAccessLevel.ADMIN),
-      ).toBeTrue();
-      expect(() =>
-        sql.parseCheckQuery(stmt.sql, api.DatabaseAccessLevel.ANONYMOUS),
-      ).toThrow();
-      expect(() =>
-        sql.parseCheckQuery(stmt.sql, api.DatabaseAccessLevel.READ_ONLY),
-      ).toThrow();
-      expect(() =>
-        sql.parseCheckQuery(stmt.sql, api.DatabaseAccessLevel.READ_WRITE),
-      ).not.toThrow();
-      expect(() =>
-        sql.parseCheckQuery(stmt.sql, api.DatabaseAccessLevel.ADMIN),
-      ).not.toThrow();
+      expect(sql.checkQueryAccess(parsed, api.DatabaseAccessLevel.ANONYMOUS)).toBeFalse();
+      expect(sql.checkQueryAccess(parsed, api.DatabaseAccessLevel.READ_ONLY)).toBeFalse();
+      expect(sql.checkQueryAccess(parsed, api.DatabaseAccessLevel.READ_WRITE)).toBeTrue();
+      expect(sql.checkQueryAccess(parsed, api.DatabaseAccessLevel.ADMIN)).toBeTrue();
+      expect(() => sql.parseCheckQuery(stmt.sql, api.DatabaseAccessLevel.ANONYMOUS)).toThrow();
+      expect(() => sql.parseCheckQuery(stmt.sql, api.DatabaseAccessLevel.READ_ONLY)).toThrow();
+      expect(() => sql.parseCheckQuery(stmt.sql, api.DatabaseAccessLevel.READ_WRITE)).not.toThrow();
+      expect(() => sql.parseCheckQuery(stmt.sql, api.DatabaseAccessLevel.ADMIN)).not.toThrow();
     });
     test("`CREATE TABLE ...` → DDL → ADMIN", () => {
       const parsed = sql.parseQuery("CREATE TABLE x (a INT, b TEXT)");
@@ -315,30 +249,14 @@ describe("sql parser", () => {
       expect(stmt.type).toBe(sql.QueryType.DDL);
       const access = sql.requisiteAccessForQueryType(stmt.type);
       expect(access).toBe(api.DatabaseAccessLevel.ADMIN);
-      expect(
-        sql.checkQueryAccess(parsed, api.DatabaseAccessLevel.ANONYMOUS),
-      ).toBeFalse();
-      expect(
-        sql.checkQueryAccess(parsed, api.DatabaseAccessLevel.READ_ONLY),
-      ).toBeFalse();
-      expect(
-        sql.checkQueryAccess(parsed, api.DatabaseAccessLevel.READ_WRITE),
-      ).toBeFalse();
-      expect(
-        sql.checkQueryAccess(parsed, api.DatabaseAccessLevel.ADMIN),
-      ).toBeTrue();
-      expect(() =>
-        sql.parseCheckQuery(stmt.sql, api.DatabaseAccessLevel.ANONYMOUS),
-      ).toThrow();
-      expect(() =>
-        sql.parseCheckQuery(stmt.sql, api.DatabaseAccessLevel.READ_ONLY),
-      ).toThrow();
-      expect(() =>
-        sql.parseCheckQuery(stmt.sql, api.DatabaseAccessLevel.READ_WRITE),
-      ).toThrow();
-      expect(() =>
-        sql.parseCheckQuery(stmt.sql, api.DatabaseAccessLevel.ADMIN),
-      ).not.toThrow();
+      expect(sql.checkQueryAccess(parsed, api.DatabaseAccessLevel.ANONYMOUS)).toBeFalse();
+      expect(sql.checkQueryAccess(parsed, api.DatabaseAccessLevel.READ_ONLY)).toBeFalse();
+      expect(sql.checkQueryAccess(parsed, api.DatabaseAccessLevel.READ_WRITE)).toBeFalse();
+      expect(sql.checkQueryAccess(parsed, api.DatabaseAccessLevel.ADMIN)).toBeTrue();
+      expect(() => sql.parseCheckQuery(stmt.sql, api.DatabaseAccessLevel.ANONYMOUS)).toThrow();
+      expect(() => sql.parseCheckQuery(stmt.sql, api.DatabaseAccessLevel.READ_ONLY)).toThrow();
+      expect(() => sql.parseCheckQuery(stmt.sql, api.DatabaseAccessLevel.READ_WRITE)).toThrow();
+      expect(() => sql.parseCheckQuery(stmt.sql, api.DatabaseAccessLevel.ADMIN)).not.toThrow();
     });
     test("`ALTER TABLE ...` → DDL → ADMIN", () => {
       const parsed = sql.parseQuery("ALTER TABLE x ADD COLUMN c TEXT");
@@ -350,30 +268,14 @@ describe("sql parser", () => {
       expect(stmt.type).toBe(sql.QueryType.DDL);
       const access = sql.requisiteAccessForQueryType(stmt.type);
       expect(access).toBe(api.DatabaseAccessLevel.ADMIN);
-      expect(
-        sql.checkQueryAccess(parsed, api.DatabaseAccessLevel.ANONYMOUS),
-      ).toBeFalse();
-      expect(
-        sql.checkQueryAccess(parsed, api.DatabaseAccessLevel.READ_ONLY),
-      ).toBeFalse();
-      expect(
-        sql.checkQueryAccess(parsed, api.DatabaseAccessLevel.READ_WRITE),
-      ).toBeFalse();
-      expect(
-        sql.checkQueryAccess(parsed, api.DatabaseAccessLevel.ADMIN),
-      ).toBeTrue();
-      expect(() =>
-        sql.parseCheckQuery(stmt.sql, api.DatabaseAccessLevel.ANONYMOUS),
-      ).toThrow();
-      expect(() =>
-        sql.parseCheckQuery(stmt.sql, api.DatabaseAccessLevel.READ_ONLY),
-      ).toThrow();
-      expect(() =>
-        sql.parseCheckQuery(stmt.sql, api.DatabaseAccessLevel.READ_WRITE),
-      ).toThrow();
-      expect(() =>
-        sql.parseCheckQuery(stmt.sql, api.DatabaseAccessLevel.ADMIN),
-      ).not.toThrow();
+      expect(sql.checkQueryAccess(parsed, api.DatabaseAccessLevel.ANONYMOUS)).toBeFalse();
+      expect(sql.checkQueryAccess(parsed, api.DatabaseAccessLevel.READ_ONLY)).toBeFalse();
+      expect(sql.checkQueryAccess(parsed, api.DatabaseAccessLevel.READ_WRITE)).toBeFalse();
+      expect(sql.checkQueryAccess(parsed, api.DatabaseAccessLevel.ADMIN)).toBeTrue();
+      expect(() => sql.parseCheckQuery(stmt.sql, api.DatabaseAccessLevel.ANONYMOUS)).toThrow();
+      expect(() => sql.parseCheckQuery(stmt.sql, api.DatabaseAccessLevel.READ_ONLY)).toThrow();
+      expect(() => sql.parseCheckQuery(stmt.sql, api.DatabaseAccessLevel.READ_WRITE)).toThrow();
+      expect(() => sql.parseCheckQuery(stmt.sql, api.DatabaseAccessLevel.ADMIN)).not.toThrow();
     });
     test("`DROP TABLE ...` → DDL → ADMIN", () => {
       const parsed = sql.parseQuery("DROP TABLE x");
@@ -385,30 +287,14 @@ describe("sql parser", () => {
       expect(stmt.type).toBe(sql.QueryType.DDL);
       const access = sql.requisiteAccessForQueryType(stmt.type);
       expect(access).toBe(api.DatabaseAccessLevel.ADMIN);
-      expect(
-        sql.checkQueryAccess(parsed, api.DatabaseAccessLevel.ANONYMOUS),
-      ).toBeFalse();
-      expect(
-        sql.checkQueryAccess(parsed, api.DatabaseAccessLevel.READ_ONLY),
-      ).toBeFalse();
-      expect(
-        sql.checkQueryAccess(parsed, api.DatabaseAccessLevel.READ_WRITE),
-      ).toBeFalse();
-      expect(
-        sql.checkQueryAccess(parsed, api.DatabaseAccessLevel.ADMIN),
-      ).toBeTrue();
-      expect(() =>
-        sql.parseCheckQuery(stmt.sql, api.DatabaseAccessLevel.ANONYMOUS),
-      ).toThrow();
-      expect(() =>
-        sql.parseCheckQuery(stmt.sql, api.DatabaseAccessLevel.READ_ONLY),
-      ).toThrow();
-      expect(() =>
-        sql.parseCheckQuery(stmt.sql, api.DatabaseAccessLevel.READ_WRITE),
-      ).toThrow();
-      expect(() =>
-        sql.parseCheckQuery(stmt.sql, api.DatabaseAccessLevel.ADMIN),
-      ).not.toThrow();
+      expect(sql.checkQueryAccess(parsed, api.DatabaseAccessLevel.ANONYMOUS)).toBeFalse();
+      expect(sql.checkQueryAccess(parsed, api.DatabaseAccessLevel.READ_ONLY)).toBeFalse();
+      expect(sql.checkQueryAccess(parsed, api.DatabaseAccessLevel.READ_WRITE)).toBeFalse();
+      expect(sql.checkQueryAccess(parsed, api.DatabaseAccessLevel.ADMIN)).toBeTrue();
+      expect(() => sql.parseCheckQuery(stmt.sql, api.DatabaseAccessLevel.ANONYMOUS)).toThrow();
+      expect(() => sql.parseCheckQuery(stmt.sql, api.DatabaseAccessLevel.READ_ONLY)).toThrow();
+      expect(() => sql.parseCheckQuery(stmt.sql, api.DatabaseAccessLevel.READ_WRITE)).toThrow();
+      expect(() => sql.parseCheckQuery(stmt.sql, api.DatabaseAccessLevel.ADMIN)).not.toThrow();
     });
   });
 });

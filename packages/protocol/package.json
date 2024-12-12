@@ -1,6 +1,6 @@
 {
   "name": "@genstack.js/protocol",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Protocol buffers and related utilities for Genstack",
   "type": "module",
   "repository": {
@@ -18,6 +18,10 @@
     "build": "pnpm run gen && tsc",
     "check": "pnpm build && pnpm biome check && tsc --noEmit && pnpx publint",
     "postinstall": "pnpm gen"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
   },
   "imports": {
     "#protocol": "./dist/gen/genstack",
