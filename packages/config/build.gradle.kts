@@ -21,8 +21,8 @@ plugins {
   `jvm-toolchains`
   alias(libs.plugins.nexus)
   alias(libs.plugins.android.library)
-  alias(libs.plugins.genstack.kmp)
   alias(libs.plugins.idea.ext)
+  alias(libs.plugins.genstack.kmp)
   alias(libs.plugins.genstack.root)
   alias(libs.plugins.buildconfig)
 }

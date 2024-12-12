@@ -1,23 +1,26 @@
 [versions]
+abicheck = "0.16.3"
 coroutines = "1.9.0"
 datetime = "0.6.1"
 html = "0.11.0"
-serialization = "1.7.3"
-rpc = "0.4.0"
 kover = "0.9.0-RC"
+rpc = "0.4.0"
+serialization = "1.7.3"
 
 [plugins]
+abicheck = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "abicheck" }
 kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
 
 [libraries]
+build-plugins-abicheck = { module = "org.jetbrains.kotlinx:binary-compatibility-validator", version.ref = "abicheck" }
+build-plugins-kover = { module = "org.jetbrains.kotlinx:kover-gradle-plugin", version.ref = "kover" }
 coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
+coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "datetime" }
 html = { module = "org.jetbrains.kotlinx:kotlinx-html", version.ref = "html" }
-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "serialization" }
 serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
 serialization-protobuf = { module = "org.jetbrains.kotlinx:kotlinx-serialization-protobuf", version.ref = "serialization" }
-build-plugins-kover = { module = "org.jetbrains.kotlinx:kover-gradle-plugin", version.ref = "kover" }
 
 [bundles]
 all = [

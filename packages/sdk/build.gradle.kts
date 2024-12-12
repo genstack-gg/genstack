@@ -6,8 +6,8 @@ plugins {
   `maven-publish`
   alias(libs.plugins.nexus)
   alias(libs.plugins.android.library)
-  alias(libs.plugins.genstack.kmp)
   alias(libs.plugins.idea.ext)
+  alias(libs.plugins.genstack.kmp)
   alias(libs.plugins.genstack.root)
 }
 
@@ -22,6 +22,7 @@ java {
 }
 
 kotlin {
+  withSourcesJar(publish = true)
   explicitApiWarning()
   androidTarget()
 
@@ -50,8 +51,8 @@ kotlin {
 
   sourceSets {
     commonMain.dependencies {
-      api(genstackMaven("config"))
-      api(genstackMaven("protocol"))
+      api(genstack.config)
+      api(genstack.protocol)
     }
     commonTest.dependencies {
       implementation(kotlin("test"))
@@ -83,3 +84,4 @@ android {
 }
 
 configureKmpProject()
+publishableKmpLib()
