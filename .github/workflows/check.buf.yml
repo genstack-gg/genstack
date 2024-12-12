@@ -28,7 +28,7 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
       - name: "Check: Buf Build"
-        uses: bufbuild/buf-action@3fb70352251376e958c4c2c92c3818de82a71c2b # v1.0.2
+        uses: bufbuild/buf-action@v1
         with:
           token: ${{ secrets.BUF_TOKEN }}
           # Change setup_only to true if you only want to set up the Action and not execute other commands.
@@ -37,7 +37,7 @@ jobs:
           # Optional GitHub token for API requests. Ensures requests aren't rate limited.
           github_token: ${{ secrets.GITHUB_TOKEN }}
       - name: "Check: Buf Lint"
-        uses: bufbuild/buf-action@3fb70352251376e958c4c2c92c3818de82a71c2b # v1.0.2
+        uses: bufbuild/buf-action@v1
         with:
           token: ${{ secrets.BUF_TOKEN }}
           # Change setup_only to true if you only want to set up the Action and not execute other commands.

@@ -1,49 +1,14 @@
 {
   "name": "@genstack.js/builder",
   "version": "0.1.1",
+  "private": true,
   "type": "module",
-  "description": "Build tools for the Genstack toolkit",
-  "repository": {
-    "url": "https://github.com/genstack-gg/genstack"
-  },
   "engines": {
     "bun": "^1.1"
   },
-  "bin": {
-    "pkglint": "./dist/pkglint.mjs"
-  },
-  "files": ["dist"],
-  "scripts": {
-    "build:types": "tsc",
-    "build:pkglint:esm": "esbuild --bundle --platform=neutral --format=esm --external:node:path --outfile=dist/pkglint.mjs src/pkglint.mts",
-    "build:pkglint": "pnpm run build:pkglint:esm",
-    "build:pkgutil:cjs": "esbuild --bundle --platform=neutral --format=cjs --external:node:path --outfile=dist/pkgutil.cjs src/pkgutil.mts",
-    "build:pkgutil:esm": "esbuild --bundle --platform=neutral --format=esm --external:node:path --outfile=dist/pkgutil.mjs src/pkgutil.mts",
-    "build:pkgutil": "pnpm run build:pkgutil:cjs && pnpm run build:pkgutil:esm",
-    "build": "pnpm run build:types && pnpm run build:pkgutil && pnpm run build:pkglint",
-    "publish:npm": "npm publish --access public",
-    "gen": "pnpm run build",
-    "pkglint": "bun run ./src/pkglint.mts",
-    "test": "echo 'No tests defined'",
-    "check": "pnpm run build && pnpm biome check && tsc --noEmit && pnpx publint && pnpm run pkglint"
-  },
-  "exports": {
-    "./pkglint": {
-      "types": "./dist/pkglint.d.mts",
-      "import": "./dist/pkglint.mjs",
-      "default": "./dist/pkglint.mjs"
-    },
-    "./pkgutil": {
-      "types": "./dist/pkgutil.d.mts",
-      "import": "./dist/pkgutil.mjs",
-      "require": "./dist/pkgutil.cjs",
-      "default": "./dist/pkgutil.mjs"
-    }
-  },
   "dependencies": {
     "typescript": "5.7.2",
-    "esbuild": "0.24.0",
-    "chalk": "5.3.0"
+    "esbuild": "0.24.0"
   },
   "devDependencies": {
     "@types/bun": "1.1.14",

@@ -7,14 +7,11 @@
          <trust file="gradle-enterprise-gradle-plugin-3.16.2.jar" reason="Gradle built-in"/>
          <trust file="gradle-enterprise-gradle-plugin-3.16.2.module" reason="Gradle built-in"/>
          <trust group="com.github.webassembly" reason="Trusted upstream"/>
-         <trust group="com.google.protobuf" reason="Trusted upstream"/>
          <trust group="com.yarnpkg" reason="Trusted upstream"/>
-         <trust group="io.grpc" reason="Trusted upstream"/>
          <trust group="io.kotest" reason="Trusted upstream"/>
          <trust group="io.ktor" reason="Trusted upstream"/>
          <trust group="io.projectreactor" reason="Trusted upstream"/>
          <trust group="org.codehaus.groovy" reason="Gradle built-in"/>
-         <trust group="org.graalvm.buildtools" reason="Trusted upstream"/>
          <trust group="org.graalvm.sdk" reason="Trusted upstream"/>
          <trust group="org.graalvm.truffle" reason="Trusted upstream"/>
          <trust group="org.gradle" reason="Gradle itself"/>
@@ -22,6 +19,9 @@
          <trust group="org.nodejs" reason="Gradle built-in"/>
          <trust group="org.pkl-lang" reason="Trusted upstream"/>
          <trust group="org.springframework" reason="Trusted upstream"/>
+         <trust group="com.google.protobuf" reason="Trusted upstream"/>
+         <trust group="io.grpc" reason="Trusted upstream"/>
+         <trust group="org.graalvm.buildtools" reason="Trusted upstream"/>
       </trusted-artifacts>
       <ignored-keys>
          <ignored-key id="012579464D01C06A" reason="Key couldn't be downloaded from any key server"/>

@@ -3,9 +3,6 @@
   "version": "0.1.1",
   "description": "Protocol buffers and related utilities for Genstack",
   "type": "module",
-  "repository": {
-    "url": "https://github.com/genstack-gg/genstack"
-  },
   "config": {
     "apiVersion": "v1"
   },

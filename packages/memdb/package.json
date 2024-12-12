@@ -6,9 +6,6 @@
   "config": {
     "apiVersion": "v1"
   },
-  "repository": {
-    "url": "https://github.com/genstack-gg/genstack"
-  },
   "engines": {
     "node": ">=18",
     "bun": "^1.1"
@@ -30,8 +27,7 @@
     "build:types": "tsc",
     "build": "bun run --bun ./scripts/build.mts && pnpm run build:types && pnpm run build:cli && pnpm run build:cli:all",
     "publish:npm": "npm publish --access public",
-    "pkglint": "bun run ../builder/src/pkglint.mts",
-    "check": "pnpm biome check && tsc --noEmit && pnpx publint && pnpm run pkglint"
+    "check": "pnpm biome check && tsc --noEmit && pnpx publint"
   },
   "exports": {
     "./bun": {

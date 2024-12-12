@@ -3,9 +3,6 @@
   "version": "0.1.1",
   "type": "module",
   "packageManager": "pnpm@9.14.4",
-  "repository": {
-    "url": "https://github.com/genstack-gg/genstack"
-  },
   "scripts": {
     "tsc": "tsc",
     "publint": "pnpx publint",
