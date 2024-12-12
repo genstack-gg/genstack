@@ -439,10 +439,7 @@ export function queryWithToken(token: number, value: string, statement = false):
   });
 }
 
-export type AdapterQueryReturn = {
-  result: AnyQueryResult;
-  response: DatabaseQueryResponse;
-};
+export type AdapterQueryReturn = { result: AnyQueryResult; response: DatabaseQueryResponse };
 
 /**
  * ## Generic Database Adapter

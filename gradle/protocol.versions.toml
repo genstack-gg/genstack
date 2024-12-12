@@ -1,9 +1,9 @@
 [versions]
-protocol = "20241026011343.8bfad9140ad9"
-proto-jvm = "28.3.0.1.20241026011343.8bfad9140ad9"
-grpc-java = "1.67.1.1.20241026011343.8bfad9140ad9"
-grpc-kotlin = "1.4.1.1.20241026011343.8bfad9140ad9"
-validate-java = "1.1.0.1.20241026011343.8bfad9140ad9"
+protocol = "20241211083946.3b9caaecfb06"
+proto-jvm = "28.3.0.2.20241211083946.3b9caaecfb06"
+grpc-java = "1.68.2.1.20241211083946.3b9caaecfb06"
+grpc-kotlin = "1.4.1.1.20241211083946.3b9caaecfb06"
+validate-java = "1.1.0.1.20241211083946.3b9caaecfb06"
 
 [libraries]
 proto-java-full = { module = "build.buf.gen:genstack_protocol_protocolbuffers_java", version.ref = "proto-jvm" }

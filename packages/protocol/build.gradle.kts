@@ -7,9 +7,9 @@ plugins {
   alias(libs.plugins.nexus)
   alias(libs.plugins.buf)
   alias(libs.plugins.android.library)
-  alias(libs.plugins.newco.kmp)
   alias(libs.plugins.idea.ext)
-  alias(libs.plugins.newco.root)
+  alias(libs.plugins.genstack.kmp)
+  alias(libs.plugins.genstack.root)
 }
 
 java {
@@ -83,7 +83,7 @@ kotlin {
       }
 
       dependencies {
-        api(genstackMaven("config"))
+        api(genstack.config)
         api(libs.bundles.protobuf.jvm)
         api(libs.bundles.grpc.jvm)
       }
@@ -106,6 +106,7 @@ android {
 }
 
 configureKmpProject()
+publishableKmpLib()
 
 listOf(
   tasks.named("compileKotlinJvm"),
