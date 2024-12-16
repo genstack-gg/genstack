@@ -1,0 +1,77 @@
+[project]
+  name = "genstack"
+  version = "0.1.2"
+  description = "Framework for agentic AI"
+  longDescription = "Genstack is a framework for building AI-enabled software agents."
+  authors = ["2am Logic, Inc."]
+  inceptionYear = 2024
+
+  [project.links]
+    homepage = "https://genstack.gg"
+
+  [project.java]
+    groupId = "gg.genstack"
+    version = "21"
+    multiProject = true
+
+[environment]
+  variables = ".dev/jreleaser.secrets.toml"
+
+[platform.replacements]
+# Nothing at this time.
+
+[signing]
+  active = "ALWAYS"
+  armored = true
+
+[checksum]
+  algorithms = ["MD5", "SHA-1", "SHA-256", "SHA-512"]
+  individual = true
+
+[catalog.github]
+  active = "ALWAYS"
+
+[catalog.slsa]
+  active = "ALWAYS"
+
+[catalog.sbom.cyclonedx]
+  active = "ALWAYS"
+  pack.enabled = true
+  formats = ["JSON"]
+
+[catalog.swid.main]
+  active = "ALWAYS"
+  [[catalog.swid.main.entities]]
+    name = "Two AM Logic, Inc."
+    regid = "https://2amlogic.com"
+    roles = ["tagCreator", "softwareCreator"]
+
+[release.github]
+  enabled = true
+  owner = "2amlogic"
+  name = "genstack-og"
+  host = "github.com"
+  sign = true
+  username = "genstackbot"
+  uploadAssets = "ALWAYS"
+  draft = true
+  commitAuthor.name = "Genstasck Bot"
+  commitAuthor.email = "genstackbot@2amlogic.com"
+
+  [release.github.update]
+    enabled = true
+    sections = ["BODY", "ASSETS"]
+
+[deploy.maven.mavenCentral.sonatype]
+  active = "ALWAYS"
+  url = "https://central.sonatype.com/api/v1/publisher"
+  stagingRepositories = ["build/repo/stage"]
+
+[deploy.maven.nexus2.maven-central]
+  active = "NEVER"
+  url = "https://s01.oss.sonatype.org/service/local"
+  snapshotUrl = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+  closeRepository = true
+  releaseRepository = false
+  stagingRepositories = ["target/staging-deploy"]
+

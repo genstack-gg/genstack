@@ -102,6 +102,7 @@ export function resolveBin(path: string, name: string): { name: string; path: st
     case "linux":
       platform = arm64Tags.has(arch) ? BinaryPlatform.LINUX_ARM64 : BinaryPlatform.LINUX_AMD64;
       break;
+    case "darwin":
     case "macos":
       platform = arm64Tags.has(arch) ? BinaryPlatform.MACOS_ARM64 : BinaryPlatform.MACOS_AMD64;
       break;

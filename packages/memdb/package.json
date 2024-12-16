@@ -66,7 +66,7 @@
     }
   },
   "optionalDependencies": {
-    "sqlite": "^5"
+    "sqlite": "^5.1.1"
   },
   "devDependencies": {
     "@depot/connectrpc-workers": "^1.2.0",

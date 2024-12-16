@@ -1,0 +1,151 @@
+name: "Release (PR)"
+
+on:
+  workflow_dispatch:
+    inputs:
+      semver:
+        description: "New Version (Semver)"
+        required: true
+        default: "patch"
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+      runner:
+        description: "Runner"
+        default: "ubuntu-latest"
+        type: string
+  workflow_call:
+    inputs:
+      semver:
+        description: "New Version (Semver)"
+        required: true
+        type: string
+      runner:
+        description: "Runner"
+        default: "ubuntu-latest"
+        type: string
+    secrets:
+      GH_GENSTACKBOT_TOKEN:
+        required: true
+        description: "GitHub: Genstack Bot Token"
+      GPG_SIGNING_KEY:
+        required: true
+        description: "Signing Keys: GPG"
+      GPG_SIGNING_PASSWORD:
+        required: true
+        description: "Signing Keys: GPG Passphrase"
+      GPG_SIGNING_KEY_ID:
+        description: "Signing Keys: GPG Signing Key ID"
+        required: true
+    outputs:
+      packageVersion:
+        description: "Package Version"
+        value: ${{ jobs.create-release-pr.outputs.packageVersion }}
+
+permissions:
+  # Needs push access.
+  contents: write
+  # Needs access to file PRs.
+  pull-requests: write
+
+jobs:
+  create-release-pr:
+    name: "Release PR (${{ inputs.semver }})"
+    runs-on: ubuntu-latest
+    outputs:
+      packageVersion: ${{ steps.set_version.outputs.packageVersion }}
+    steps:
+      - name: "Setup: Harden Runner"
+        uses: step-security/harden-runner@0080882f6c36860b6ba35c610c98ce87d4e2f26f # v2.10.2
+        with:
+          disable-sudo: true
+          egress-policy: audit
+          allowed-endpoints: ""
+      - name: "Setup: Checkout"
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          submodules: true
+          persist-credentials: false
+      - name: "Setup: Pkl"
+        uses: pkl-community/setup-pkl@d42ebf923a369a329248cbb1d2605b5a8611502e  # v0
+        with:
+          pkl-version: 0.27.1
+      - name: "Setup: PNPM"
+        uses: pnpm/action-setup@fe02b34f77f8bc703788d5817da081398fad5dd2 # v4.0.0
+        with:
+          run_install: false
+      - name: "Setup: Node"
+        uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4.1.0
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'pnpm'
+      - name: "Setup: Bun"
+        uses: oven-sh/setup-bun@4bc047ad259df6fc24a6c9b0f9a0cb08cf17fbe5 # v2.0.1
+        with:
+          bun-version-file: ".bun-version"
+      - name: "Setup: Gradle"
+        uses: gradle/actions/setup-gradle@cc4fc85e6b35bafd578d5ffbc76a5518407e1af0 # v4.2.1
+      - name: "Setup: Buf"
+        uses: bufbuild/buf-setup-action@9672cee01808979ea1249f81d6d321217b9a10f6 # v1.47.2
+        with:
+          version: 'v1.45.0'
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          buf_api_token: ${{ secrets.BUF_TOKEN }}
+      - name: "Setup: NPM Dependencies"
+        run: pnpm install --frozen-lockfile
+      - name: "Setup: Signing Keys (GPG)"
+        uses: crazy-max/ghaction-import-gpg@cb9bde2e2525e640591a934b1fd28eef1dcaf5e5 # v6.2.0
+        with:
+          gpg_private_key: ${{ secrets.GPG_SIGNING_KEY }}
+          passphrase: ${{ secrets.GPG_SIGNING_PASSWORD }}
+      - name: "Setup: Git State"
+        run: |
+          git config --global user.email genstackbot@2amlogic.com
+          git config --global user.name "Genstack Bot"
+          git config --global commit.gpgsign true
+          git config --global user.signingkey ${{ secrets.GPG_SIGNING_KEY_ID }}
+      - name: "Release: Bump Version"
+        run: |
+          pnpm run versionup ${SEMVER} --yes
+        env:
+          SEMVER: ${{ github.event.inputs.semver }}
+      - name: "Release: Set Package Version"
+        id: set_version
+        run: |
+            echo "PACKAGE_VERSION=$(cat lerna.json | jq -r .version)" >> $GITHUB_ENV
+            echo "packageVersion=$(cat lerna.json | jq -r .version)" >> $GITHUB_OUTPUT
+      - name: "Release: Generate Release Notes"
+        id: release_note
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+        with:
+          script: |
+            const result = await exec.getExecOutput(`gh api "/repos/{owner}/{repo}/releases/generate-notes" -f tag_name="v${process.env.PACKAGE_VERSION}" --jq .body`, [], {
+              ignoreReturnCode: true,
+            })
+            core.setOutput('stdout', result.stdout)
+        env:
+          PACKAGE_VERSION: ${{ env.PACKAGE_VERSION }}
+          GITHUB_TOKEN: ${{ secrets.GH_GENSTACKBOT_TOKEN }}
+      - name: "Release: Create PR"
+        id: cpr
+        uses: peter-evans/create-pull-request@5e914681df9dc83aa4e4905692ca88beb2f9e91f # v7.0.5
+        with:
+          token: ${{ secrets.GH_GENSTACKBOT_TOKEN }}
+          commit-message: "chore(release): `v${{ env.PACKAGE_VERSION }}`"
+          committer: Genstack Bot <genstackbot@2amlogic.com>
+          author: Genstack Bot <genstackbot@2amlogic.com>
+          assignees: ${{ github.actor }}
+          signoff: true
+          branch: release/${{ env.PACKAGE_VERSION }}
+          branch-suffix: timestamp
+          delete-branch: true
+          title: 'chore(release): `v${{ env.PACKAGE_VERSION }}`'
+          body: |
+            ${{ steps.release_note.outputs.stdout }}
+          labels: "release"
+      - name: Check Pull Request
+        run: |
+          echo "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"
+          echo "Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}"

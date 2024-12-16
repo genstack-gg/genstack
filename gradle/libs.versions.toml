@@ -3,7 +3,7 @@ agp = "8.7.3"
 buf-plugin = "0.10.2"
 buf-tool = "1.47.2"
 buildconfig-plugin = "5.5.1"
-buildhealth-plugin = "2.6.0"
+buildhealth-plugin = "2.6.1"
 buildkite-tests-instrumented = "0.3.0"
 buildkite-tests-unit = "0.3.0"
 clikt = "5.0.2"
@@ -35,6 +35,7 @@ grpc-java-protobuf-lite = { module = "io.grpc:grpc-protobuf-lite", version.ref =
 grpc-kotlin-stub = { module = "io.grpc:grpc-kotlin-stub", version.ref = "grpc-kotlin" }
 grpc-kotlin-stub-lite = { module = "io.grpc:grpc-kotlin-stub-lite", version.ref = "grpc-kotlin-lite" }
 jakarta-validation-api = { module = "jakarta.validation:jakarta.validation-api" }
+kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin-sdk" }
 pkl-cli-java = { module = "org.pkl-lang:pkl-cli-java", version.ref = "pkl-lib" }
 pkl-codegen-kotlin = { module = "org.pkl-lang:pkl-codegen-kotlin", version.ref = "pkl-lib" }
 pkl-commons-cli = { module = "org.pkl-lang:pkl-commons-cli", version.ref = "pkl-lib" }

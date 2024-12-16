@@ -30,7 +30,7 @@
     "@bufbuild/protobuf": "2.2.2"
   },
   "devDependencies": {
-    "@genstack.js/builder": "latest",
+    "@genstack.js/builder": "workspace:*",
     "esbuild": "0.24.0"
   }
 }

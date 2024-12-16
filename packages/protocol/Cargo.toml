@@ -1,6 +1,6 @@
 [package]
 name = "genstack-protocol"
-version = "0.1.1"
+version = "0.1.2"
 description = "Coming soon"
 authors = ["Sam Gammon <sam@2amlogic.com>", "Robb Walters <robb@2amlogic.com>", "Dario Valdespino <dario@2amlogi.com>"]
 edition = "2021"

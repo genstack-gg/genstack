@@ -106,7 +106,7 @@ android {
 }
 
 configureKmpProject()
-publishableKmpLib()
+publishableKmpLib(rootPath = "../..")
 
 listOf(
   tasks.named("compileKotlinJvm"),
@@ -119,3 +119,8 @@ listOf(
 
 tasks.bufLint.configure { enabled = false }
 tasks.bufFormatCheck.configure { enabled = false }
+
+afterEvaluate {
+  tasks.withType<Jar>().configureEach { dependsOn("bufGenerate") }
+  tasks.named("jvmSourcesJar").configure { dependsOn("bufGenerate") }
+}
