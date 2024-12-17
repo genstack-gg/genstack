@@ -39,7 +39,6 @@
          <ignored-key id="F6D4A1D411E9D1AE" reason="Key couldn't be downloaded from any key server"/>
       </ignored-keys>
       <trusted-keys>
-         <trusted-key id="7B79ADD11F8A779FE90FD3D0893A028475557671" group="org.gradle" name="github-dependency-graph-gradle-plugin"/>
          <trusted-key id="015479E1055341431B4545AB72475FD306B9CAB7" group="com.googlecode.javaewah" name="JavaEWAH" version="1.1.12"/>
          <trusted-key id="03C123038C20AAE9E286C857479D601F3A7B5C1A">
             <trusting group="com.github.ajalt.clikt"/>
