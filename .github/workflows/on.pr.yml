@@ -108,7 +108,7 @@ jobs:
     with:
       upload-sarif: false
       fail-on-vuln: false
-      scan-args: --config=./.dev/osv.toml --call-analysis=all --lockfile=pnpm-lock.yaml --lockfile=Cargo.lock --lockfile=*/gradle.lockfile
+      scan-args: --config=./.dev/osv.toml --call-analysis=all .
 
   check-depreview:
     name: "Check"
