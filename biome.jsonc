@@ -23,7 +23,17 @@
       "packages/protocol/gen",
       "packages/vscode",
       "packages/config/scripts/constants.mts",
-      "dist"
+      "dist",
+      "tsconfig.json",
+      "*/tsconfig.json",
+      "*/tsconfig.*.json",
+      // The following files are under migration
+      "packages/www",
+      "packages/llm-relay",
+      "packages/lib",
+      "ui",
+      "vite.config.ts",
+      "vitest.config.ts"
     ]
   },
   "formatter": {

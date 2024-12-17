@@ -16,7 +16,11 @@ describe("bin resolve", async () => {
   test("bin name/path should contain current platform string", () => {
     const binary = bin.resolveBin(binpath, "doesnotexist");
     expect(binary.name).toContain("doesnotexist");
-    expect(binary.name).toContain(process.platform);
+    let expected: string = process.platform;
+    if (process.platform === "darwin") {
+      expected = "macos";
+    }
+    expect(binary.name).toContain(expected);
   });
 
   test("should throw when resolving a non-existent bin", () => {

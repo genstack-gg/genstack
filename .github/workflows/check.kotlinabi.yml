@@ -1,0 +1,75 @@
+name: "Check (Kotlin ABI)"
+
+"on":
+  workflow_dispatch:
+    inputs:
+      suppress:
+        description: "Suppress Errors"
+        required: false
+        default: "false"
+  workflow_call:
+    inputs:
+      suppress:
+        description: "Suppress Errors"
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+jobs:
+  check-abi:
+    name: "Check (ABI)"
+    runs-on: ubuntu-24.04
+    continue-on-error: ${{ !fromJson(inputs.suppress || 'false') }}
+    steps:
+      - name: "Setup: Harden Runner"
+        uses: step-security/harden-runner@0080882f6c36860b6ba35c610c98ce87d4e2f26f # v2.10.2
+        with:
+          disable-sudo: true
+          egress-policy: audit
+      - name: "Setup: Checkout"
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: "Setup: Java"
+        uses: actions/setup-java@8df1039502a15bceb9433410b1a100fbe190c53b # v4.5.0
+        with:
+          distribution: 'zulu'
+          java-version: '21'
+      - name: "Setup: GraalVM"
+        uses: graalvm/setup-graalvm@4a200f28cd70d1940b5e33bd00830b7dc71a7e2b # v1.2.6
+        with:
+          java-version: '23'
+          distribution: 'graalvm'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: "Setup: Pkl"
+        uses: pkl-community/setup-pkl@d42ebf923a369a329248cbb1d2605b5a8611502e  # v0
+        with:
+          pkl-version: 0.27.1
+      - name: "Setup: PNPM"
+        uses: pnpm/action-setup@fe02b34f77f8bc703788d5817da081398fad5dd2 # v4.0.0
+        with:
+          run_install: false
+      - name: "Setup: Node"
+        uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4.1.0
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'pnpm'
+      - name: "Setup: Bun"
+        uses: oven-sh/setup-bun@4bc047ad259df6fc24a6c9b0f9a0cb08cf17fbe5 # v2.0.1
+        with:
+          bun-version-file: ".bun-version"
+      - name: "Setup: Gradle Settings"
+        run: |
+          mkdir -p $HOME/.gradle
+          cp -fv ./.github/workflows/gradle-ci.properties $HOME/.gradle/gradle.properties
+      - name: "Setup: Gradle"
+        uses: gradle/actions/setup-gradle@cc4fc85e6b35bafd578d5ffbc76a5518407e1af0 # v4.2.1
+      - name: "Setup: NPM Dependencies"
+        run: pnpm install --frozen-lockfile
+      - name: "Check: Kotlin ABI"
+        continue-on-error: ${{ !fromJson(inputs.suppress || 'false') }}
+        run: ./gradlew apiCheck --no-daemon --warning-mode=none

@@ -203,4 +203,4 @@ tasks {
 }
 
 configureKmpProject()
-publishableKmpLib()
+publishableKmpLib(rootPath = "../..")

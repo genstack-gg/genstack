@@ -15,7 +15,7 @@
   "scripts": {
     "stage": "cz",
     "lerna": "lerna",
-    "detekt": "bun run ./.dev/detekt.ts -r md:./.dev/reports/detekt.md -r txt:./.dev/reports/detekt.txt -r sarif:./.dev/reports/detekt.sarif -i engine/src,commons/src,packages/sdk/src",
+    "detekt": "bun run ./.dev/detekt.ts -r md:./.dev/reports/detekt.md -r txt:./.dev/reports/detekt.txt -r sarif:./.dev/reports/detekt.sarif -i packages/sdk/src",
     "check:fix": "biome check --write",
     "check:fmt": "biome format packages",
     "check": "biome check packages",
@@ -54,20 +54,10 @@
     }
   },
   "lint-staged": {
-    "*.{json,css}": [
-      "biome check --staged --skip-errors --no-errors-on-unmatched"
-    ],
-    "*.{ts,cts,mts,tsx}": [
-      "biome check --staged --skip-errors --no-errors-on-unmatched"
-    ],
-    "*.{js,cjs,mjs,jsx}": [
-      "biome check --staged --skip-errors --no-errors-on-unmatched"
-    ],
-    "*.kt": [
-      "bun run ./.dev/detekt.ts --auto-correct -i",
-      "bun run ./.dev/detekt.ts -i",
-      "ktfmt"
-    ],
+    "*.{json,css}": ["biome check --staged --skip-errors --no-errors-on-unmatched"],
+    "*.{ts,cts,mts,tsx}": ["biome check --staged --skip-errors --no-errors-on-unmatched"],
+    "*.{js,cjs,mjs,jsx}": ["biome check --staged --skip-errors --no-errors-on-unmatched"],
+    "*.kt": ["bun run ./.dev/detekt.ts --auto-correct -i", "bun run ./.dev/detekt.ts -i", "ktfmt"],
     "*.rs": ["cargo fmt --"]
   }
 }

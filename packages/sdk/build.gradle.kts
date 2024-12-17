@@ -84,4 +84,4 @@ android {
 }
 
 configureKmpProject()
-publishableKmpLib()
+publishableKmpLib(rootPath = "../..")

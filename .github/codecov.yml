@@ -56,10 +56,6 @@ flags:
     paths:
       - app/**/*.*
     carryforward: true
-  engine:
-    paths:
-      - engine/**/*.*
-    carryforward: true
 
 comment:
   layout: "reach,diff,flags,components,files,footer"
