@@ -11,3 +11,4 @@ gradle/genstack-build/build/
 # Added to prevent OSV scanner from thinking these are valid dependencies. When updating
 # verification metadata, use `git add -f`.
 gradle/verification-metadata.xml
+target/
