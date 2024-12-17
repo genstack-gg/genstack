@@ -48,6 +48,12 @@ public object GenstackBuild {
   public val javaToolchainVersion: JavaLanguageVersion = JavaLanguageVersion.of(jvmToolchain)
 }
 
+// Static plugin IDs referenced in build scripts.
+public object PluginId {
+  public const val jreleaser: String = "org.jreleaser"
+  public const val signing: String = "signing"
+}
+
 // Alias for build constants.
 private val constants = GenstackBuild
 
@@ -68,6 +74,14 @@ private fun Project.isRelease(): Boolean =
  */
 public fun androidNamespace(postfix: String): String =
     "${constants.androidNamespacePrefix}.${postfix}"
+
+// Apply a plugin with the provided ID (on-demand), and then invoke `cbk`.
+private fun Project.withAppliedPlugin(id: String, cbk: Project.() -> Unit) {
+  if (!plugins.hasPlugin(id)) {
+    plugins.apply(id)
+  }
+  pluginManager.withPlugin(id) { cbk() }
+}
 
 /**
  * Configure dependencies.
@@ -212,9 +226,19 @@ private fun Project.configureNexus() {
   }
 }
 
-// Configures publishing via new APIs for Maven Central and JReleaser.
-private fun Project.configureJReleaser() {
-  // Coming soon.
+/**
+ * Configures publishing via new APIs for Maven Central and JReleaser.
+ *
+ * @param rootPath Relative path to the root of the project workspace.
+ */
+private fun Project.configureJReleaser(rootPath: String = ".") {
+  withAppliedPlugin(PluginId.jreleaser) {
+    configure<org.jreleaser.gradle.plugin.JReleaserExtension>() {
+      configFile = rootProject.file("$rootPath/.dev/jreleaser.toml")
+      dryrun = !isRelease()
+      gitRootSearch = true
+    }
+  }
 }
 
 // Configure the built-in Gradle publishing extension with target repositories.
@@ -273,7 +297,18 @@ public fun Project.dokkaJavadocJar() {
 
 /** Configure signing for publishing. */
 public fun Project.configureSigning() {
-  // Nothing yet.
+  withAppliedPlugin(PluginId.signing) {
+    configure<SigningExtension>() {
+      useGpgCmd()
+
+      if (isRelease()) {
+        requireNotNull(
+            System.getenv("GPG_SIGNING_KEY_ID") ?: findProperty("signing.gnupg.keyName")) {
+              "`GPG_SIGNING_KEY_ID` or `signing.gnupg.keyName` must be set in the environment for release builds"
+            }
+      }
+    }
+  }
 }
 
 /**
@@ -285,11 +320,13 @@ public fun Project.configureSigning() {
  *
  * KMP libraries generate additional Gradle metadata for multiplatform use.
  *
+ * @param rootPath Relative path to the root of the project workspace.
  * @param artifactName Unqualified name of this publication; defaults to project name.
  * @param description Description of the library to include in the POM.
  * @param pomCallback Callback to configure the POM; optional.
  */
 public fun Project.publishableKmpLib(
+    rootPath: String,
     artifactName: String = project.name,
     artifactDescription: String? = null,
     pomCallback: (org.gradle.api.publish.maven.MavenPom.() -> Unit)? = null,
@@ -320,6 +357,11 @@ public fun Project.publishableKmpLib(
   // configure publishable JARs with proper naming
   tasks.withType<Jar>().configureEach { configurePublishableJar() }
   afterEvaluate { tasks.withType<Jar>().configureEach { configurePublishableJar() } }
+
+  if (isRelease()) {
+    // configure jreleaser last
+    configureJReleaser(rootPath)
+  }
 }
 
 /**
@@ -329,6 +371,7 @@ public fun Project.publishableKmpLib(
  * - Maven Central, via the Nexus publishing plugin
  * - Local and staging repositories, via Gradle's built-in publishing plugin
  *
+ * @param rootPath Relative path to the root of the project workspace.
  * @param name Name of the published version of the library; for example, if the library is known
  *   internally as `core`, this might be transformed to `genstack-core`. This name should always
  *   just be `core`.
@@ -336,6 +379,7 @@ public fun Project.publishableKmpLib(
  * @param pomCallback Callback to configure the POM; optional.
  */
 public fun Project.publishableJvmLib(
+    rootPath: String,
     artifactName: String = project.name,
     artifactDescription: String? = null,
     pomCallback: (org.gradle.api.publish.maven.MavenPom.() -> Unit)? = null,
@@ -368,5 +412,10 @@ public fun Project.publishableJvmLib(
         }
       }
     }
+  }
+
+  if (isRelease()) {
+    // configure jreleaser last
+    configureJReleaser(rootPath)
   }
 }
