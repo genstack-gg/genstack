@@ -1,0 +1,46 @@
+# Gradle dependencies which are ignored because they do not pass on these vulnerabilities
+# transitively to outputs themselves.
+
+[[IgnoredVulns]]
+id = "GHSA-735f-pc8j-v9w8"
+reason = "Build-time dependency"
+
+[[IgnoredVulns]]
+id = "GHSA-xq3w-v528-46rv"
+reason = "Build-time dependency"
+
+[[IgnoredVulns]]
+id = "GHSA-4265-ccf5-phj5"
+reason = "Build-time dependency"
+
+[[IgnoredVulns]]
+id = "GHSA-4g9r-vxhx-9pgx"
+reason = "Build-time dependency"
+
+[[IgnoredVulns]]
+id = "GHSA-4h8f-2wvx-gg5w"
+reason = "Build-time dependency"
+
+[[IgnoredVulns]]
+id = "GHSA-8xfc-gm6g-vgpv"
+reason = "Build-time dependency"
+
+[[IgnoredVulns]]
+id = "GHSA-m44j-cfrm-g8qc"
+reason = "Build-time dependency"
+
+[[IgnoredVulns]]
+id = "GHSA-v435-xc8x-wvr9"
+reason = "Build-time dependency"
+
+[[IgnoredVulns]]
+id = "GHSA-3p86-9955-h393"
+reason = "Build-time dependency"
+
+[[IgnoredVulns]]
+id = "GHSA-5mg8-w23w-74h3"
+reason = "Build-time dependency"
+
+[[IgnoredVulns]]
+id = "GHSA-7g45-4rm6-3mm3"
+reason = "Build-time dependency"
