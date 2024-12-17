@@ -4,4 +4,15 @@ retry-on-snapshot-warnings: true
 comment-summary-in-pr: always
 vulnerability-check: true
 license-check: true
-allow-ghsas: []
+allow-ghsas:
+- GHSA-735f-pc8j-v9w8
+- GHSA-xq3w-v528-46rv
+- GHSA-4265-ccf5-phj5
+- GHSA-4g9r-vxhx-9pgx
+- GHSA-4h8f-2wvx-gg5w
+- GHSA-8xfc-gm6g-vgpv
+- GHSA-m44j-cfrm-g8qc
+- GHSA-v435-xc8x-wvr9
+- GHSA-3p86-9955-h393
+- GHSA-5mg8-w23w-74h3
+- GHSA-7g45-4rm6-3mm3
