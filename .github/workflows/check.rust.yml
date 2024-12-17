@@ -25,6 +25,9 @@ on:
 env:
   CARGO_TERM_COLOR: always
 
+permissions:
+  contents: read
+
 jobs:
   check-clippy:
     name: "Check (Clippy/Rust Format)"

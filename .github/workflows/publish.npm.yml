@@ -63,14 +63,16 @@ name: "Publish (NPM)"
 
 permissions:
   contents: read
-  packages: write
-  id-token: write
-  attestations: write
 
 jobs:
   publish-npm:
     name: "Publish to NPM (${{ inputs.package }})"
     runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+      attestations: write
     steps:
       - name: "Setup: Harden Runner"
         uses: step-security/harden-runner@0080882f6c36860b6ba35c610c98ce87d4e2f26f # v2.10.2
