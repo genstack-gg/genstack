@@ -45,10 +45,7 @@ on:
         value: ${{ jobs.create-release-pr.outputs.packageVersion }}
 
 permissions:
-  # Needs push access.
-  contents: write
-  # Needs access to file PRs.
-  pull-requests: write
+  contents: read
 
 jobs:
   create-release-pr:
@@ -56,6 +53,11 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       packageVersion: ${{ steps.set_version.outputs.packageVersion }}
+    permissions:
+      # Needs push access.
+      contents: write
+      # Needs access to file PRs.
+      pull-requests: write
     steps:
       - name: "Setup: Harden Runner"
         uses: step-security/harden-runner@0080882f6c36860b6ba35c610c98ce87d4e2f26f # v2.10.2
