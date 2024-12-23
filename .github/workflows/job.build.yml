@@ -124,7 +124,7 @@ jobs:
       - name: "Setup: Gradle"
         uses: gradle/actions/setup-gradle@cc4fc85e6b35bafd578d5ffbc76a5518407e1af0 # v4.2.1
       - name: "Setup: Buf"
-        uses: bufbuild/buf-setup-action@9672cee01808979ea1249f81d6d321217b9a10f6 # v1.47.2
+        uses: bufbuild/buf-setup-action@1115d0acd3d2a120b30023fac52abc46807c8fd6 # v1.48.0
         with:
           version: 'v1.45.0'
           github_token: ${{ secrets.GITHUB_TOKEN }}
