@@ -83,7 +83,7 @@ jobs:
           toolchain: nightly
           components: rustfmt,clippy,llvm-tools-preview
       - name: "Setup: Buf"
-        uses: bufbuild/buf-setup-action@9672cee01808979ea1249f81d6d321217b9a10f6 # v1.47.2
+        uses: bufbuild/buf-setup-action@1115d0acd3d2a120b30023fac52abc46807c8fd6 # v1.48.0
       - name: "Shim: Engine Binary"
         run: |
           mkdir -p engine/build/native/nativeCompile
