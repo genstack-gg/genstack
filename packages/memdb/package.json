@@ -72,7 +72,7 @@
     "@depot/connectrpc-workers": "^1.2.0",
     "@genstack.js/builder": "workspace:*",
     "@types/bun": "1.1.14",
-    "esbuild": "0.24.0",
+    "esbuild": "0.24.2",
     "typescript": "5.7.2"
   },
   "dependencies": {
