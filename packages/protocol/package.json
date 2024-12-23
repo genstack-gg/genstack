@@ -65,7 +65,7 @@
     "@genstack.js/config": "workspace:*"
   },
   "devDependencies": {
-    "@bufbuild/buf": "1.47.2",
+    "@bufbuild/buf": "1.48.0",
     "@types/bun": "1.1.14",
     "esbuild": "0.24.0",
     "typescript": "5.7.2"
